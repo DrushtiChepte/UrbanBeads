@@ -33,7 +33,7 @@ const Navbar = () => {
       <nav
         className={`navbar ${
           showNavbar ? "translate-y-0" : "-translate-y-24"
-        } transition-transform duration-400 z-50`}
+        } transition-transform duration-400 z-50 h-25`}
       >
         <Link href="/">
           <Image src={"/logo.svg"} alt="logo" width={100} height={60} />
@@ -45,7 +45,7 @@ const Navbar = () => {
                 key={item.title}
                 onMouseEnter={() => item.children && setOpenIndex(index)}
                 onMouseLeave={() => item.children && setOpenIndex(null)}
-                className=""
+                className="h-25 flex flex-col justify-center items-center"
               >
                 <Link
                   href={item.path || "#"}
@@ -54,11 +54,11 @@ const Navbar = () => {
                   {item.title}
                 </Link>
                 {item.children && openIndex === index && (
-                  <div className="dropdown-menu">
+                  <div className="dropdown-menu ">
                     {item.children.map((c) => {
                       return (
                         <Link
-                          className="flex items-center gap-4  hover:translate-y-1 transition-all duration-300"
+                          className="flex items-center gap-4 hover:translate-y-1 transition-all duration-300"
                           key={c.title}
                           href={c.path}
                         >
@@ -84,7 +84,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center justify-center gap-2">
-          <Link href="/cart">
+          <Link href="#">
             <Image
               src={"/shopping-bag.png"}
               alt="cart"
@@ -93,7 +93,7 @@ const Navbar = () => {
               className="hover:scale-110 transition-transform duration-300"
             />
           </Link>
-          <Link href="/login">
+          <Link href="/#">
             <Image
               src={"/person.png"}
               alt="person"

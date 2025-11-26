@@ -16,6 +16,12 @@
   .dropdown-menu {
     @apply absolute left-1/2 top-full -translate-x-1/2 w-[90vw] bg-background rounded-md shadow-md grid grid-cols-1 md:grid-cols-3  p-8 gap-10 z-50;
   }
+  .card {
+    @apply bg-background rounded-lg shadow-lg p-6;
+  }
+  .heading {
+    @apply text-2xl font-semibold mb-10 text-brown/80;
+  }
 }
 
 body {
