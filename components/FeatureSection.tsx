@@ -1,33 +1,42 @@
 import Image from "next/image";
+import Link from "next/link";
 
 interface FeatureSectionProps {
   section: string;
-  title: string[];
+  subTitle?: string;
+  productName: string[];
   photosURL: string[];
 }
 
 const FeatureSection = (props: FeatureSectionProps) => {
   return (
-    <div className="my-20 overflow-x-hidden">
-      <div className="flex justify-between items-center">
-        <span className="heading text-brown/80">{props.section}</span>
-        <span className="cursor-pointer italic">View all</span>
+    <div className="my-5 lg:my-10">
+      <div className="flex flex-col my-10">
+        <span className="heading mb-2 text-brown text-center block fade-up">
+          {props.section}
+        </span>
+        <span className="text-brown/80 text-center block fade-up">
+          {props.subTitle}
+        </span>
       </div>
-      <div className="relative overflow-x-hidden">
-        <div className="flex snap-x snap-mandatory overflow-x-auto gap-5 py-5 scroll-smooth scrollbar-hide">
-          {props.title.map((title, photo) => (
-            <div
-              className="card snap-start rounded-lg overflow-hidden shrink-0 w-[90%] md:w-70 cursor-pointer"
+      <div className="relative overflow-x-auto no-scrollbar">
+        <div className="flex snap-x snap-mandatory overflow-x-auto gap-3 scroll-smooth pb-10">
+          {props.productName.map((title, photo) => (
+            <Link
+              href={"product"}
+              className="card snap-start shrink-0 w-[90%] md:w-80 lg:w-70 cursor-pointer"
               key={title}
             >
-              <Image
-                src={props.photosURL[photo]}
-                alt={title}
-                height={600}
-                width={500}
-              />
-              <span>{title}</span>
-            </div>
+              <div className="relative aspect-4/5 mb-4">
+                <Image
+                  src={props.photosURL[photo]}
+                  alt={title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <span className="text-brown text-lg">{title}</span>
+            </Link>
           ))}
         </div>
       </div>

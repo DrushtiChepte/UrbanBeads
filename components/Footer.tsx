@@ -1,5 +1,4 @@
 import { footerLinks } from "@/lib/constants";
-import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -7,7 +6,7 @@ const Footer = () => {
       <div className=" max-w-7xl mx-auto px-10 md:px-0 py-10 grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Brand */}
         <div>
-          <h2 className="text-xl font-semibold">UrbanBeads 💎</h2>
+          <h2 className="text-xl font-semibold">UrbanBeads 🤍</h2>
           <p className="text-sm mt-2">
             Handmade jewellery crafted with love and care. Unique, minimal &
             made for everyday elegance.
@@ -32,20 +31,22 @@ const Footer = () => {
         <div>
           <h3 className="text-sm font-semibold mb-3">Contact Us</h3>
           <ul className="space-y-2 text-sm text-brown/80">
-            <li>
+            {/* <li>
               📞 WhatsApp:{" "}
               <a
                 href="https://wa.me/91XXXXXXXXXX"
                 className="underline hover:text-brown"
+                rel="noopener noreferrer"
               >
                 +91 XXXXXXXXXX
               </a>
-            </li>
+            </li> */}
             <li>
               📷 Instagram:{" "}
               <a
                 href="https://www.instagram.com/__urbanbeads/"
                 className="underline hover:text-brown"
+                rel="noopener noreferrer"
               >
                 @__urbanbeads
               </a>

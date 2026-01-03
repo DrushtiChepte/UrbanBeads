@@ -48,6 +48,18 @@ export default function FeaturesStrip({ useImage = false }) {
   };
   return (
     <section className="py-10 bg-[#ddd8c6]">
+      {/* Desktop: Grid */}
+      <div className="hidden md:grid grid-cols-6 gap-6 max-w-6xl mx-auto">
+        {featuresList.map((f) => (
+          <div key={f.title} className="flex flex-col items-center gap-3">
+            <div className="text-4xl mb-1 text-rose-500">{f.icon}</div>
+            <h4 className="text-sm font-semibold">{f.title}</h4>
+            <p className="text-xs text-neutral-500 px-6 text-center">
+              {f.subtitle}
+            </p>
+          </div>
+        ))}
+      </div>
       {/* Mobile: Slider */}
       <div className="md:hidden">
         <div
@@ -77,7 +89,7 @@ export default function FeaturesStrip({ useImage = false }) {
           </div>
         </div>
 
-        {/* Dots */}
+        {/* Dots
         <div className="mt-3 flex justify-center gap-2">
           {featuresList.map((_, i) => (
             <button
@@ -89,7 +101,7 @@ export default function FeaturesStrip({ useImage = false }) {
               aria-label={`Go to slide ${i + 1}`}
             />
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );

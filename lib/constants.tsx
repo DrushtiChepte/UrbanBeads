@@ -2,7 +2,7 @@ export const navbar = [
   { title: "Home", path: "/" },
   {
     title: "Shop",
-    path: "#shop",
+    path: "/#shop",
     children: [
       {
         image: "/images/placeholder.png",
@@ -76,7 +76,7 @@ export const categories = [
 export const footerLinks = [
   { title: "Home", path: "/" },
   { title: "About", path: "/about" },
-  { title: "Shop", path: "#shop" },
+  { title: "Shop", path: "/#shop" },
   { title: "Privacy Policy", path: "/privacy" },
   { title: "Shipping Policy", path: "/shipping" },
 ];
@@ -226,5 +226,35 @@ export const featuresList = [
         <circle cx="12" cy="7" r="4" strokeWidth="1.5" />
       </svg>
     ),
+  },
+];
+
+export const tempProducts = [
+  {
+    id: 1,
+    name: "The Gothel Necklace",
+    slug: "the-gothel-necklace",
+    price: 399,
+    image: "/images/placeholder.png",
+    category: "Necklaces",
+    description: "A beautiful handmade beaded necklace.",
+  },
+  {
+    id: 2,
+    name: "Coquette Charm",
+    slug: "coquette-charm",
+    price: 119,
+    image: "/images/placeholder.png",
+    category: "Phone Charms",
+    description: "A stylish charm  to complement Your phone.",
+  },
+  {
+    id: 3,
+    name: "The Blush Charm",
+    slug: "the-blush-charm",
+    price: 199,
+    image: "/images/placeholder.png",
+    category: "Phone Charms",
+    description: "A cute blush-themed phone charm.",
   },
 ];

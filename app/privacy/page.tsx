@@ -1,6 +1,6 @@
 const Privacy = () => {
   return (
-    <div className="mt-40 px-10 md:px-40 text-neutral-800 leading-relaxed">
+    <div className="mt-40 px-10 md:px-40 text-neutral-800 leading-relaxed fade-up">
       <span className="block font-semibold mb-4">Last updated: 2025</span>
 
       <p className="mb-4">
