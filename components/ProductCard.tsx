@@ -22,11 +22,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         transition={{ duration: 0.7, ease: "easeOut" }}
         viewport={{ once: true, amount: 0.3 }}
       >
-        <Link
-          key={product.slug}
-          href={`/products/${product.slug}`}
-          className="group p-3 fade-up"
-        >
+        <Link key={product.slug} href={`#`} className="group p-3 fade-up">
           <div
             ref={scrollRef}
             className="relative w-full aspect-4/5 overflow-hidden mb-3"
