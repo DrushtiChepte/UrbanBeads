@@ -28,7 +28,6 @@ export default function FeaturesStrip({ useImage = false }) {
     return () => {
       timerRef.current && clearInterval(timerRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex]);
 
   // Touch swipe handlers
@@ -47,7 +46,7 @@ export default function FeaturesStrip({ useImage = false }) {
     if (diff < -threshold) prev();
   };
   return (
-    <section className="py-10 bg-[#ddd8c6]">
+    <section className="py-10 my-20 bg-[#ddd8c6]">
       {/* Desktop: Grid */}
       <div className="hidden md:grid grid-cols-6 gap-6 max-w-6xl mx-auto">
         {featuresList.map((f) => (
@@ -88,20 +87,19 @@ export default function FeaturesStrip({ useImage = false }) {
             ))}
           </div>
         </div>
-
-        {/* Dots
+        {/* Dots */}
         <div className="mt-3 flex justify-center gap-2">
           {featuresList.map((_, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}
               className={`h-2 w-2 rounded-full transition-all ${
-                i === activeIndex ? "w-4 bg-rose-600" : "bg-neutral-300"
+                i === activeIndex ? "w-4 bg-rose-500" : "bg-neutral-300"
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />
           ))}
-        </div> */}
+        </div>
       </div>
     </section>
   );

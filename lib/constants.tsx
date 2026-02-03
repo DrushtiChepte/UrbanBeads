@@ -7,32 +7,32 @@ export const navbar = [
       {
         image: "/images/placeholder.png",
         title: "Necklaces",
-        path: "/shop/necklaces",
+        path: "/necklaces",
       },
       {
-        image: "/images/placeholder.png",
+        image: "/images/blush pearl bracelet.png",
         title: "Bracelets",
-        path: "/shop/bracelets",
+        path: "/bracelets",
       },
       {
         image: "/images/placeholder.png",
         title: "Anklets",
-        path: "/shop/anlets",
+        path: "/anlets",
       },
       {
         image: "/images/placeholder.png",
         title: "Phone Charms",
-        path: "/shop/phone-charms",
+        path: "/phone-charms",
       },
       {
         image: "/images/placeholder.png",
         title: "Bag Charms",
-        path: "/shop/bag-charms",
+        path: "/bag-charms",
       },
       {
         image: "/images/placeholder.png",
         title: "Keychains",
-        path: "/shop/keychains",
+        path: "/keychains",
       },
     ],
   },
@@ -44,32 +44,32 @@ export const categories = [
   {
     image: "/images/placeholder.png",
     title: "Necklaces",
-    path: "/shop/necklaces",
+    path: "/necklaces",
   },
   {
-    image: "/images/placeholder.png",
+    image: "/images/blush pearl bracelet.png",
     title: "Bracelets",
-    path: "/shop/bracelets",
+    path: "/bracelets",
   },
   {
     image: "/images/placeholder.png",
     title: "Anklets",
-    path: "/shop/anlets",
+    path: "/anlets",
   },
   {
     image: "/images/placeholder.png",
     title: "Phone Charms",
-    path: "/shop/phone-charms",
+    path: "/phone-charms",
   },
   {
     image: "/images/placeholder.png",
     title: "Bag Charms",
-    path: "/shop/bag-charms",
+    path: "/bag-charms",
   },
   {
     image: "/images/placeholder.png",
     title: "Keychains",
-    path: "/shop/keychains",
+    path: "/keychains",
   },
 ];
 

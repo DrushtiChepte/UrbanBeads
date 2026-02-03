@@ -9,7 +9,7 @@ export default function CartPage() {
         {/* Cart Item */}
         <div className="bg-white rounded-2xl p-4 mb-4 flex gap-4">
           <img
-            src="/product.jpg"
+            src="/images/blush pearl bracelet.png"
             className="w-24 h-24 rounded-xl object-cover"
           />
 
@@ -18,9 +18,13 @@ export default function CartPage() {
             <p className="text-[#7A6755]">₹499</p>
 
             <div className="flex items-center gap-3 mt-3">
-              <button className="px-3 py-1 border rounded-full">–</button>
+              <button className="px-3 py-1 border rounded-full cursor-pointer shadow-lg">
+                –
+              </button>
               <span>1</span>
-              <button className="px-3 py-1 border rounded-full">+</button>
+              <button className="px-3 py-1 border rounded-full cursor-pointer shadow-lg">
+                +
+              </button>
 
               <button className="ml-auto text-sm text-red-500">Remove</button>
             </div>

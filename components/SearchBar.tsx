@@ -8,7 +8,6 @@ const SearchBar = ({ translatePosition }: { translatePosition: boolean }) => {
     >
       <div
         className="flex items-center gap-3 
-       bg-[#F7F1E7] 
        border border-[#7A6755] 
        rounded-full 
        px-4 py-2 

@@ -54,7 +54,11 @@ const Navbar = () => {
   }, [showSearch]);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50">
+    <header
+      className={`fixed top-0 left-0 w-full z-50 ${
+        pathName.startsWith("/admin") ? "hidden" : ""
+      }`}
+    >
       <div className="absolute top-0 left-0 w-full z-50 transition-transform duration-400">
         <SearchBar translatePosition={showSearch} />
       </div>
@@ -64,7 +68,13 @@ const Navbar = () => {
         } transition-transform duration-400 z-50 h-25`}
       >
         <Link href="/">
-          <Image src={"/logo.svg"} alt="logo" width={100} height={60} />
+          <Image
+            src={"/logo.svg"}
+            alt="logo"
+            width={100}
+            height={40}
+            className="w-24 h-auto"
+          />
         </Link>
         <div className="md:flex gap-20 hidden relative">
           {navbar.map((item, index) => {
@@ -78,7 +88,7 @@ const Navbar = () => {
               >
                 <Link
                   href={item.path || "#"}
-                  className={`border-b-2 border-transparent hover:border-b-brown hover:font-semibold transition-all duration-300 ${
+                  className={`border-b-2 border-transparent hover:border-b-brown transition-all duration-300 ${
                     isActive ? "font-semibold border-b-brown" : ""
                   }`}
                 >
@@ -142,16 +152,6 @@ const Navbar = () => {
               className="hover:scale-110 transition-transform duration-300"
             />
           </Link>
-          <Link href="/#" className="w-5 h-5 md:w-6 md:h-6">
-            <Image
-              src={"/person.png"}
-              alt="person"
-              width={25}
-              height={25}
-              className="ml-2 hover:scale-110 transition-transform duration-300"
-            />
-          </Link>
-
           {/* mobile menu */}
           <div
             className={`${

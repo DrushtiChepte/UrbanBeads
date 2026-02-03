@@ -3,6 +3,8 @@ import { Lato, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "@/components/Footer";
+import { AuthProvider } from "@/context/AuthContext";
+import { Toaster } from "sonner";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -32,7 +34,10 @@ export default function RootLayout({
         className={`${playfair.variable} ${lato.variable} antialiased min-h-screen`}
       >
         <Navbar />
-        <main>{children}</main>
+        <AuthProvider>
+          <Toaster />
+          <main>{children}</main>
+        </AuthProvider>
         <Footer />
       </body>
     </html>
