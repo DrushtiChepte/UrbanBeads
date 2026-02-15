@@ -45,7 +45,7 @@ export const addProduct = async ({
   try {
     const uploadedImageUrls: string[] = [];
     for (const image of images) {
-      const fileName = `${category}/${crypto.randomUUID()}-${image.name}`;
+      const fileName = `${category.toLowerCase()}/${crypto.randomUUID()}-${image.name}`;
 
       const { data, error } = await supabase.storage
         .from("All-Products")
@@ -66,7 +66,7 @@ export const addProduct = async ({
     const uploadedVideoUrls: string[] = [];
 
     for (const video of videos) {
-      const filePath = `${category}/${crypto.randomUUID()}-${video.name}`;
+      const filePath = `${category.toLowerCase()}/${crypto.randomUUID()}-${video.name}`;
 
       const { error } = await supabase.storage
         .from("All-Products")
@@ -125,13 +125,55 @@ export const editProduct = async ({
   price: number;
 }) => {
   try {
-    let finalImages = { ...existingImages };
+    const bucket = "All-Products";
+
+    //fetch old files
+    const { data: oldMedia, error: fetchError } = await supabase
+      .from("products")
+      .select("images , videos")
+      .eq("slug", oldSlug)
+      .single();
+
+    if (fetchError) throw fetchError;
+
+    const oldImages = Array.isArray(oldMedia?.images) ? oldMedia.images : [];
+
+    const oldVideos = Array.isArray(oldMedia?.videos) ? oldMedia.videos : [];
+
+    //detect removed files
+    const removedFiles = [...oldImages, ...oldVideos].filter(
+      (url: string) =>
+        !existingImages.includes(url) && !existingVideos.includes(url),
+    );
+
+    //delete removed files from storage
+
+    const filesToDelete = removedFiles
+      .map((url: string) => {
+        try {
+          const parsed = new URL(url);
+          const parts = parsed.pathname.split("/");
+          const bucketIndex = parts.indexOf(bucket);
+          return bucketIndex !== -1
+            ? parts.slice(bucketIndex + 1).join("/")
+            : null;
+        } catch {
+          return null;
+        }
+      })
+      .filter(Boolean) as string[];
+
+    if (filesToDelete.length > 0) {
+      await supabase.storage.from(bucket).remove(filesToDelete);
+    }
+
+    let finalImages = [...existingImages];
 
     if (newImages.length > 0) {
       const uploadedImageUrls: string[] = [];
 
       for (const image of newImages) {
-        const fileName = `${category}/${crypto.randomUUID()}-${image.name}`;
+        const fileName = `${category.toLowerCase()}/${crypto.randomUUID()}-${image.name}`;
 
         const { error } = await supabase.storage
           .from("All-Products")
@@ -148,13 +190,13 @@ export const editProduct = async ({
       finalImages = uploadedImageUrls;
     }
 
-    let finalVideos = { ...existingVideos };
+    let finalVideos = [...existingVideos];
 
     if (newVideos.length > 0) {
       const uploadedVideoUrls: string[] = [];
 
       for (const video of newVideos) {
-        const filePath = `${category}/${crypto.randomUUID()}-${video.name}`;
+        const filePath = `${category.toLowerCase()}/${crypto.randomUUID()}-${video.name}`;
 
         const { error } = await supabase.storage
           .from("All-Products")

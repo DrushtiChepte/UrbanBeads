@@ -90,8 +90,6 @@ export default function AdminPage() {
                       const currentMedia =
                         mixedMedia[activeIndex] || mixedMedia[0];
 
-                      console.log(product.videos);
-
                       return (
                         <div
                           key={product.id}
