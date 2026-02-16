@@ -1,6 +1,7 @@
 "use client";
 import { supabase } from "@/supabase-client";
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface AuthContextType {
   signInWithGoogle: () => Promise<void>;
@@ -12,12 +13,12 @@ interface AuthContextType {
 
 const emailList = process.env.NEXT_PUBLIC_ADMIN_EMAILS
   ? process.env.NEXT_PUBLIC_ADMIN_EMAILS.split(",").map((email) =>
-      email.trim().toLowerCase()
+      email.trim().toLowerCase(),
     )
   : [];
 
 export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -35,8 +36,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("Error fetching user:", error.message);
       setIsAdmin(false);
     }
-    const userEmail = data.user.email?.toLowerCase();
-    setIsAdmin(emailList.includes(userEmail || ""));
+    const userEmail = data.user.email?.toLowerCase() || "";
+    const isAuthorized = emailList.includes(userEmail);
+
+    if (!isAuthorized) {
+      toast.error("You are not authorized as admin");
+      await supabase.auth.signOut();
+      setIsAdmin(false);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsAdmin(true);
     setIsLoading(false);
   };
 
