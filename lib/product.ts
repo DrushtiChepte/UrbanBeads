@@ -45,14 +45,20 @@ export const addProduct = async ({
   try {
     const uploadedImageUrls: string[] = [];
     for (const image of images) {
-      const fileName = `${category.toLowerCase()}/${crypto.randomUUID()}-${image.name}`;
+      const cleanName = image.name
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9.\-]/g, "");
+
+      const fileName = `${category.toLowerCase()}/${crypto.randomUUID()}-${cleanName}`;
 
       const { data, error } = await supabase.storage
         .from("All-Products")
         .upload(fileName, image);
 
       if (error) {
-        console.error("Error uploading image:", error.message);
+        console.error("FULL IMAGE ERROR:", error);
+        continue;
       }
 
       if (data) {
@@ -66,7 +72,12 @@ export const addProduct = async ({
     const uploadedVideoUrls: string[] = [];
 
     for (const video of videos) {
-      const filePath = `${category.toLowerCase()}/${crypto.randomUUID()}-${video.name}`;
+      const cleanName = video.name
+        .toLowerCase()
+        .replace(/\s+/g, "-") // replace spaces with -
+        .replace(/[^a-z0-9.\-]/g, ""); // remove special characters
+
+      const filePath = `${category.toLowerCase()}/${crypto.randomUUID()}-${cleanName}`;
 
       const { error } = await supabase.storage
         .from("All-Products")
@@ -173,7 +184,12 @@ export const editProduct = async ({
       const uploadedImageUrls: string[] = [];
 
       for (const image of newImages) {
-        const fileName = `${category.toLowerCase()}/${crypto.randomUUID()}-${image.name}`;
+        const cleanName = image.name
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9.\-]/g, "");
+
+        const fileName = `${category.toLowerCase()}/${crypto.randomUUID()}-${cleanName}`;
 
         const { error } = await supabase.storage
           .from("All-Products")
@@ -196,9 +212,14 @@ export const editProduct = async ({
       const uploadedVideoUrls: string[] = [];
 
       for (const video of newVideos) {
-        const filePath = `${category.toLowerCase()}/${crypto.randomUUID()}-${video.name}`;
+        const cleanName = video.name
+          .toLowerCase()
+          .replace(/\s+/g, "-") // replace spaces with -
+          .replace(/[^a-z0-9.\-]/g, ""); // remove special characters
 
+        const filePath = `${category.toLowerCase()}/${crypto.randomUUID()}-${cleanName}`;
         const { error } = await supabase.storage
+
           .from("All-Products")
           .upload(filePath, video, { contentType: video.type });
 
