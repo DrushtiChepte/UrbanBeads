@@ -89,6 +89,7 @@ const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
             <option value="Phone Charms">Phone Charms</option>
             <option value="Bag Charms">Bag Charms</option>
             <option value="keychains">keychains</option>
+            <option value="Earrings">Earrings</option>
           </select>
         </label>
 

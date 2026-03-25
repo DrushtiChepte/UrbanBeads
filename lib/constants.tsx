@@ -34,6 +34,11 @@ export const navbar = [
         title: "Keychains",
         path: "/keychains",
       },
+      {
+        image: "/images/placeholder.png",
+        title: "Earrings",
+        path: "/earrings",
+      },
     ],
   },
   { title: "About", path: "/about" },
@@ -70,6 +75,11 @@ export const categories = [
     image: "/images/placeholder.png",
     title: "Keychains",
     path: "/keychains",
+  },
+  {
+    image: "/images/placeholder.png",
+    title: "earrings",
+    path: "/earrings",
   },
 ];
 
