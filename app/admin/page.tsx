@@ -12,12 +12,15 @@ import { toast } from "sonner";
 
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import Sidebar from "@/components/admin/Sidebar";
 
 export default function AdminPage() {
   const [productsLoading, setProductsLoading] = useState(true);
   const [products, setProducts] = useState<Array<any>>([]);
   const [activeImage, setActiveImage] = useState<Record<string, number>>({});
   const [editingProduct, setEditingProduct] = useState<any>(null);
+
+  const [filter, setFilter] = useState("All");
 
   const { isAdmin, isLoading } = useAuth();
   const router = useRouter();
@@ -52,6 +55,13 @@ export default function AdminPage() {
     return null;
   }
 
+  const filteredProducts =
+    filter === "All"
+      ? products
+      : products.filter(
+          (p) => p.category.toLowerCase() === filter.toLowerCase(),
+        );
+
   const handleDelete = async (slug: string) => {
     const confirmDelete = confirm(
       "Are you sure you want to delete this product?",
@@ -78,6 +88,7 @@ export default function AdminPage() {
 
   return (
     <section className="h-screen max-w-7xl mx-auto py-10 overflow-x-hidden scrollbar-hide">
+      <Sidebar setFilter={setFilter} filter={filter} />
       <p className="heading text-center">Admin Dashboard</p>
 
       <div className="px-4 mt-6">
@@ -87,7 +98,7 @@ export default function AdminPage() {
             <AddProducts onSuccess={getProducts} />
           </div>
 
-          {products.map((product) => {
+          {filteredProducts.map((product) => {
             const images = Array.isArray(product.images) ? product.images : [];
 
             const videos = Array.isArray(product.videos) ? product.videos : [];

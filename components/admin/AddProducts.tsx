@@ -78,7 +78,9 @@ const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
           Category:
           <select
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e) =>
+              setCategory(e.target.value.toLowerCase().replace(/\s+/g, "-"))
+            }
             required
             className="border p-2 w-full mt-1 rounded"
           >
@@ -86,8 +88,8 @@ const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
             <option value="Necklaces">Necklaces</option>
             <option value="Bracelets">Bracelets</option>
             <option value="Anklets">Anklets</option>
-            <option value="Phone Charms">Phone Charms</option>
-            <option value="Bag Charms">Bag Charms</option>
+            <option value="Phone-Charms">Phone Charms</option>
+            <option value="Bag-Charms">Bag Charms</option>
             <option value="keychains">keychains</option>
             <option value="Earrings">Earrings</option>
           </select>

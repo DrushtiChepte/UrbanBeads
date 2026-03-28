@@ -78,7 +78,7 @@ export const categories = [
   },
   {
     image: "/images/placeholder.png",
-    title: "earrings",
+    title: "Earrings",
     path: "/earrings",
   },
 ];
