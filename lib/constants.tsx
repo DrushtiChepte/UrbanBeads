@@ -47,7 +47,7 @@ export const navbar = [
 
 export const categories = [
   {
-    image: "/images/placeholder.png",
+    image: "/images/all.png",
     title: "All Products",
     slug: "all",
   },
