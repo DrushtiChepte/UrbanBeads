@@ -101,7 +101,7 @@ const Navbar = () => {
                         <Link
                           className="flex items-center gap-4 hover:translate-y-1 transition-all duration-300"
                           key={c.title}
-                          href={c.path}
+                          href={`/categories/${c.slug}`}
                         >
                           <Image
                             key={c.title}

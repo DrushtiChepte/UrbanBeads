@@ -31,6 +31,12 @@
   }
 }
 
+@layer utilities {
+  .h-hero {
+    height: 60vh;
+  }
+}
+
 @keyframes fadeUp {
   from {
     opacity: 0;

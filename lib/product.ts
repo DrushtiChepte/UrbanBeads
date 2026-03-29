@@ -22,6 +22,17 @@ export const fetchProducts = async () => {
   return data || [];
 };
 
+export async function fetchProductsByCategory(category: string) {
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("category", category);
+  if (error) {
+    console.error("Error fetching products:", error);
+  }
+  return data || [];
+}
+
 const generateSlug = (title: string) => {
   return title
     .toLowerCase()

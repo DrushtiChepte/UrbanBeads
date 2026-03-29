@@ -6,10 +6,10 @@ import Shop from "@/components/Shop";
 export default function Home() {
   return (
     <>
-      <div className="mt-30 px-5 lg:max-w-7xl lg:mx-auto overflow-x-hidden">
-        <div>
-          <Hero />
-        </div>
+      <div>
+        <Hero />
+      </div>
+      <div className="mt-10 px-5 lg:max-w-7xl lg:mx-auto overflow-x-hidden bg-background">
         <div>
           <Shop />
         </div>

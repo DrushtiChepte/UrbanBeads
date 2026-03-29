@@ -7,37 +7,37 @@ export const navbar = [
       {
         image: "/images/placeholder.png",
         title: "Necklaces",
-        path: "/necklaces",
+        slug: "necklaces",
       },
       {
         image: "/images/blush pearl bracelet.png",
         title: "Bracelets",
-        path: "/bracelets",
+        slug: "bracelets",
       },
       {
         image: "/images/placeholder.png",
         title: "Anklets",
-        path: "/anlets",
+        slug: "anklets",
       },
       {
         image: "/images/placeholder.png",
         title: "Phone Charms",
-        path: "/phone-charms",
+        slug: "phone-charms",
       },
       {
         image: "/images/placeholder.png",
         title: "Bag Charms",
-        path: "/bag-charms",
+        slug: "bag-charms",
       },
       {
         image: "/images/placeholder.png",
         title: "Keychains",
-        path: "/keychains",
+        slug: "keychains",
       },
       {
         image: "/images/placeholder.png",
         title: "Earrings",
-        path: "/earrings",
+        slug: "earrings",
       },
     ],
   },
@@ -48,38 +48,43 @@ export const navbar = [
 export const categories = [
   {
     image: "/images/placeholder.png",
+    title: "All Products",
+    slug: "all",
+  },
+  {
+    image: "/images/placeholder.png",
     title: "Necklaces",
-    path: "/necklaces",
+    slug: "necklaces",
   },
   {
     image: "/images/blush pearl bracelet.png",
     title: "Bracelets",
-    path: "/bracelets",
+    slug: "bracelets",
   },
   {
     image: "/images/placeholder.png",
     title: "Anklets",
-    path: "/anlets",
+    slug: "anklets",
   },
   {
     image: "/images/placeholder.png",
     title: "Phone Charms",
-    path: "/phone-charms",
+    slug: "phone-charms",
   },
   {
     image: "/images/placeholder.png",
     title: "Bag Charms",
-    path: "/bag-charms",
+    slug: "bag-charms",
   },
   {
     image: "/images/placeholder.png",
     title: "Keychains",
-    path: "/keychains",
+    slug: "keychains",
   },
   {
     image: "/images/placeholder.png",
     title: "Earrings",
-    path: "/earrings",
+    slug: "earrings",
   },
 ];
 
