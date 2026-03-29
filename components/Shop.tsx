@@ -21,11 +21,13 @@ const Shop = () => {
             key={category.title}
             className="flex flex-col items-center cursor-pointer hover:scale-105 transition duration-300 fade-up"
           >
-            <img
-              src={category.image}
-              alt={category.title}
-              className="w-20 h-20 xl:w-30 xl:h-30 object-cover rounded-full "
-            />
+            <div className="w-20 h-20 xl:w-28 xl:h-28 rounded-full overflow-hidden bg-[#f8f5f2] flex items-center justify-center">
+              <img
+                src={category.image}
+                alt={category.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
             <div className="mt-2 text-center whitespace-nowrap text-sm lg:text-lg">
               {category.title}
             </div>

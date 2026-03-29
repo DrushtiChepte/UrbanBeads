@@ -103,14 +103,15 @@ const Navbar = () => {
                           key={c.title}
                           href={`/categories/${c.slug}`}
                         >
-                          <Image
-                            key={c.title}
-                            src={c.image}
-                            alt={c.title}
-                            width={100}
-                            height={100}
-                            className="rounded-xl object-cover"
-                          />
+                          <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#f8f5f2] flex items-center justify-center">
+                            <Image
+                              src={c.image}
+                              alt={c.title}
+                              width={100}
+                              height={100}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                           <span className="text-lg font-secondary">
                             {c.title}
                           </span>

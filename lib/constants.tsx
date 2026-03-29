@@ -5,7 +5,7 @@ export const navbar = [
     path: "/#shop",
     children: [
       {
-        image: "/images/placeholder.png",
+        image: "/images/necklace.webp",
         title: "Necklaces",
         slug: "necklaces",
       },
@@ -15,27 +15,27 @@ export const navbar = [
         slug: "bracelets",
       },
       {
-        image: "/images/placeholder.png",
+        image: "/images/anklet.webp",
         title: "Anklets",
         slug: "anklets",
       },
       {
-        image: "/images/placeholder.png",
+        image: "/images/phone-charm.webp",
         title: "Phone Charms",
         slug: "phone-charms",
       },
       {
-        image: "/images/placeholder.png",
+        image: "/images/bag-charm.webp",
         title: "Bag Charms",
         slug: "bag-charms",
       },
       {
-        image: "/images/placeholder.png",
+        image: "/images/keychain.webp",
         title: "Keychains",
         slug: "keychains",
       },
       {
-        image: "/images/placeholder.png",
+        image: "/images/earrings.webp",
         title: "Earrings",
         slug: "earrings",
       },
@@ -52,7 +52,7 @@ export const categories = [
     slug: "all",
   },
   {
-    image: "/images/placeholder.png",
+    image: "/images/necklace.webp",
     title: "Necklaces",
     slug: "necklaces",
   },
@@ -62,27 +62,27 @@ export const categories = [
     slug: "bracelets",
   },
   {
-    image: "/images/placeholder.png",
+    image: "/images/anklet.webp",
     title: "Anklets",
     slug: "anklets",
   },
   {
-    image: "/images/placeholder.png",
+    image: "/images/phone-charm.png",
     title: "Phone Charms",
     slug: "phone-charms",
   },
   {
-    image: "/images/placeholder.png",
+    image: "/images/bag-charm.webp",
     title: "Bag Charms",
     slug: "bag-charms",
   },
   {
-    image: "/images/placeholder.png",
+    image: "/images/keychain.jpg",
     title: "Keychains",
     slug: "keychains",
   },
   {
-    image: "/images/placeholder.png",
+    image: "/images/earrings.webp",
     title: "Earrings",
     slug: "earrings",
   },
