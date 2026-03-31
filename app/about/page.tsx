@@ -96,10 +96,10 @@ const About = () => {
           </div>
         </div>
 
-        {/* 🔥 Together + Brand (highlight section) */}
+        {/* Together + Brand (highlight section) */}
         <div className="grid md:grid-cols-2 gap-8">
           {/* Together */}
-          <div className="bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-md hover:shadow-xl transition">
+          <div className="bg-[#eae3d2]/90 backdrop-blur-md p-8 rounded-3xl shadow-md hover:shadow-xl transition">
             <h3 className="text-xl font-semibold mb-1 text-brown">Together</h3>
             <span className="text-xs uppercase tracking-widest text-gray-500">
               Our Journey

@@ -20,7 +20,7 @@ const Hero = () => {
       <div className="relative z-10 text-center px-6 max-w-3xl flex flex-col items-center gap-6 animate-fadeUp">
         {/* Heading */}
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-white drop-shadow-lg leading-tight">
-          Effortless Elegance
+          Beaded with Love
         </h1>
 
         {/* Subheading */}
