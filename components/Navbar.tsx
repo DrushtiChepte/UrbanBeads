@@ -6,6 +6,7 @@ import { Twirl as Hamburger } from "hamburger-react";
 import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
 import { usePathname } from "next/navigation";
+import { useCart } from "@/context/CartContext";
 
 const Navbar = () => {
   const [isOpen, setOpen] = useState(false);
@@ -15,13 +16,8 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
 
   const pathName = usePathname();
+  const { cartCount } = useCart();
 
-  // Close mobile menu on route change
-  useEffect(() => {
-    setOpen(false);
-  }, [pathName]);
-
-  // Navbar behavior on scroll
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -41,13 +37,13 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY, showSearch]);
 
-  // Close search bar when clicking outside
   useEffect(() => {
     if (!showSearch) return;
     const handleClick = (e: MouseEvent) => {
       const searchElement = document.getElementById("search-bar");
-      if (searchElement && !searchElement.contains(e.target as Node))
+      if (searchElement && !searchElement.contains(e.target as Node)) {
         setShowSearch(false);
+      }
     };
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
@@ -67,9 +63,9 @@ const Navbar = () => {
           showNavbar ? "translate-y-0" : "-translate-y-24"
         } transition-transform duration-400 z-50 h-25`}
       >
-        <Link href="/">
+        <Link href="/" onClick={() => setOpen(false)}>
           <Image
-            src={"/logo.svg"}
+            src="/logo.svg"
             alt="logo"
             width={100}
             height={40}
@@ -96,28 +92,24 @@ const Navbar = () => {
                 </Link>
                 {item.children && openIndex === index && (
                   <div className="dropdown-menu">
-                    {item.children.map((c) => {
-                      return (
-                        <Link
-                          className="flex items-center gap-4 hover:translate-y-1 transition-all duration-300"
-                          key={c.title}
-                          href={`/categories/${c.slug}`}
-                        >
-                          <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#f8f5f2] flex items-center justify-center">
-                            <Image
-                              src={c.image}
-                              alt={c.title}
-                              width={100}
-                              height={100}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <span className="text-lg font-secondary">
-                            {c.title}
-                          </span>
-                        </Link>
-                      );
-                    })}
+                    {item.children.map((c) => (
+                      <Link
+                        className="flex items-center gap-4 hover:translate-y-1 transition-all duration-300"
+                        key={c.title}
+                        href={`/categories/${c.slug}`}
+                      >
+                        <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#f8f5f2] flex items-center justify-center">
+                          <Image
+                            src={c.image}
+                            alt={c.title}
+                            width={100}
+                            height={100}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <span className="text-lg font-secondary">{c.title}</span>
+                      </Link>
+                    ))}
                   </div>
                 )}
               </div>
@@ -128,7 +120,7 @@ const Navbar = () => {
         <div className="flex items-center justify-center gap-2 px-2">
           <button
             onClick={() => setShowSearch(!showSearch)}
-            className="hover:scale-110 transition-transform duration-300 "
+            className="hover:scale-110 transition-transform duration-300"
           >
             <svg
               className="w-5 h-5 md:w-6 md:h-6 mx-2 text-brown"
@@ -144,16 +136,20 @@ const Navbar = () => {
               />
             </svg>
           </button>
-          <Link href="/cart" className="w-5 h-5 md:w-6 md:h-6">
+          <Link href="/cart" className="relative w-5 h-5 md:w-6 md:h-6">
             <Image
-              src={"/shopping-bag.png"}
+              src="/shopping-bag.png"
               alt="cart"
               width={25}
               height={25}
               className="hover:scale-110 transition-transform duration-300"
             />
+            {cartCount > 0 ? (
+              <span className="absolute -top-2 -right-2 min-w-5 h-5 px-1 rounded-full bg-brown text-white text-[10px] flex items-center justify-center">
+                {cartCount}
+              </span>
+            ) : null}
           </Link>
-          {/* mobile menu */}
           <div
             className={`${
               isOpen ? "block" : "hidden"

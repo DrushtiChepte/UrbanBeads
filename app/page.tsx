@@ -1,9 +1,12 @@
-import FeatureSection from "@/components/FeatureSection";
 import FeaturesStrip from "@/components/FeaturesStrip";
 import Hero from "@/components/Hero";
+import ProductSections from "@/components/ProductSections";
 import Shop from "@/components/Shop";
+import { fetchProducts } from "@/lib/product";
 
-export default function Home() {
+export default async function Home() {
+  const products = await fetchProducts();
+
   return (
     <>
       <div>
@@ -13,39 +16,7 @@ export default function Home() {
         <div>
           <Shop />
         </div>
-        <div className="scrollbar-hidden">
-          <FeatureSection
-            section={"Best Sellers"}
-            subTitle="The Favorites Everyone's Talking About."
-            productName={[
-              "Featured Photos",
-              "New Arrivals",
-              "Best Sellers",
-              "On Sale",
-            ]}
-            photosURL={[
-              "/images/placeholder.png",
-              "/images/placeholder.png",
-              "/images/placeholder.png",
-              "/images/placeholder.png",
-            ]}
-          />
-          <FeatureSection
-            section={"Popular products"}
-            productName={[
-              "Featured Photos",
-              "New Arrivals",
-              "Best Sellers",
-              "On Sale",
-            ]}
-            photosURL={[
-              "/images/placeholder.png",
-              "/images/placeholder.png",
-              "/images/placeholder.png",
-              "/images/placeholder.png",
-            ]}
-          />
-        </div>
+        {products.length > 0 ? <ProductSections products={products} /> : null}
       </div>
       <div className="mx-0">
         <FeaturesStrip />

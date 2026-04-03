@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
 import { Lato, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/context/AuthContext";
+import { CartProvider } from "@/context/CartContext";
 import { Toaster } from "sonner";
 
 const playfair = Playfair_Display({
@@ -33,12 +33,14 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${lato.variable} antialiased min-h-screen`}
       >
-        <Navbar />
         <AuthProvider>
-          <Toaster />
-          <main>{children}</main>
+          <CartProvider>
+            <Navbar />
+            <Toaster />
+            <main>{children}</main>
+            <Footer />
+          </CartProvider>
         </AuthProvider>
-        <Footer />
       </body>
     </html>
   );

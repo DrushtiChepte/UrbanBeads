@@ -1,3 +1,5 @@
+import { Snowflake, Ruler, Truck, FileText, Leaf } from "lucide-react";
+
 export const navbar = [
   { title: "Home", path: "/" },
   {
@@ -271,5 +273,33 @@ export const tempProducts = [
     image: "/images/placeholder.png",
     category: "Phone Charms",
     description: "A cute blush-themed phone charm.",
+  },
+];
+
+export const ProductDetails = [
+  {
+    title: "About Findings",
+    icon: <Snowflake size={16} />,
+    content: "Details about materials and construction.",
+  },
+  {
+    title: "Measurement Guides",
+    icon: <Ruler size={16} />,
+    content: "Sizing and measurement information.",
+  },
+  {
+    title: "Shipping",
+    icon: <Truck size={16} />,
+    content: "Delivery timelines and charges.",
+  },
+  {
+    title: "Notes",
+    icon: <FileText size={16} />,
+    content: "Additional important notes.",
+  },
+  {
+    title: "Jewelry Care",
+    icon: <Leaf size={16} />,
+    content: "Care instructions to maintain shine and durability.",
   },
 ];

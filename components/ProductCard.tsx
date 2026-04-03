@@ -2,11 +2,13 @@
 
 import { Product } from "@/lib/product";
 import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { toast } from "sonner";
+import { useCart } from "@/context/CartContext";
 import { Button } from "./ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type ProductCardProps = {
   product: Product;
@@ -15,6 +17,7 @@ type ProductCardProps = {
 const ProductCard = ({ product }: ProductCardProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { addItem } = useCart();
 
   const scrollToIndex = (index: number) => {
     if (!scrollRef.current) return;
@@ -45,18 +48,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
       viewport={{ once: true }}
-      className="group"
+      className="group h-full"
     >
       <Link
         href={`/products/${product.category}/${product.slug}`}
-        className="block p-3"
+        className="flex flex-col"
       >
-        {/* IMAGE CAROUSEL */}
         <div className="relative">
           <div
             ref={scrollRef}
             onScroll={handleScroll}
-            className="w-full aspect-4/5 overflow-x-auto flex snap-x snap-mandatory scroll-smooth scrollbar-none"
+            className="w-full aspect-4/5 overflow-x-auto flex snap-x snap-mandatory scroll-smooth no-scrollbar bg-[#f5ecdf]"
           >
             {product.images?.map((img, i) => (
               <div key={i} className="relative min-w-full h-full snap-start">
@@ -71,7 +73,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
             ))}
           </div>
 
-          {/*ARROWS (DESKTOP ONLY) */}
           <div className="hidden md:flex opacity-0 group-hover:opacity-100 transition-opacity">
             <button
               onClick={(e) => {
@@ -79,6 +80,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 scrollToIndex(Math.max(currentIndex - 1, 0));
               }}
               className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 backdrop-blur p-2 rounded-full shadow"
+              aria-label="Previous product image"
             >
               <ChevronLeft size={18} />
             </button>
@@ -91,6 +93,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 );
               }}
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 backdrop-blur p-2 rounded-full shadow"
+              aria-label="Next product image"
             >
               <ChevronRight size={18} />
             </button>
@@ -108,17 +111,30 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </div>
         </div>
 
-        {/* TEXT */}
-        <h3 className="text-brown text-lg font-semibold font-secondary truncate mt-3">
+        <h3 className="mt-3 min-h-15 text-brown text-lg font-semibold font-secondary line-clamp-2 leading-tight">
           {product.title}
         </h3>
 
-        <p className="text-brown font-semibold mt-1">₹{product.price}</p>
+        <p className="mt-1 text-brown font-semibold">Rs. {product.price}</p>
       </Link>
 
-      {/* BUTTON */}
-      <div className="px-3">
-        <Button className="bg-brown/90 w-full hover:bg-brown transition-colors">
+      <div className="mt-2 w-full">
+        <Button
+          onClick={() => {
+            addItem(product);
+            toast.success(`${product.title} added to cart`);
+          }}
+          className="bg-beige w-full hover:bg-brown transition-color mt-2 text-brown hover:text-white"
+        >
+          Order via Instagram
+        </Button>
+        <Button
+          onClick={() => {
+            addItem(product);
+            toast.success(`${product.title} added to cart`);
+          }}
+          className="bg-brown/90 w-full hover:bg-brown transition-colors mt-2"
+        >
           Add to cart
         </Button>
       </div>
