@@ -48,12 +48,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
       viewport={{ once: true }}
-      className="group h-full"
+      className="group h-full py-2 flex flex-col"
     >
       <Link
         href={`/products/${product.category}/${product.slug}`}
-        className="flex flex-col"
+        className="flex flex-col grow"
       >
+        {/* Image */}
         <div className="relative">
           <div
             ref={scrollRef}
@@ -61,7 +62,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
             className="w-full aspect-4/5 overflow-x-auto flex snap-x snap-mandatory scroll-smooth no-scrollbar bg-[#f5ecdf]"
           >
             {product.images?.map((img, i) => (
-              <div key={i} className="relative min-w-full h-full snap-start">
+              <div
+                key={i}
+                className="relative min-w-full aspect-4/5 snap-start"
+              >
                 <Image
                   src={img}
                   fill
@@ -111,29 +115,23 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </div>
         </div>
 
-        <h3 className="mt-3 min-h-15 text-brown text-lg font-semibold font-secondary line-clamp-2 leading-tight">
+        {/* Title */}
+        <h3 className="mt-3 min-h-11 text-brown text-md font-semibold font-secondary line-clamp-2 leading-snug">
           {product.title}
         </h3>
 
+        {/* Price */}
         <p className="mt-1 text-brown font-semibold">Rs. {product.price}</p>
       </Link>
 
-      <div className="mt-2 w-full">
+      {/* Button OUTSIDE but aligned */}
+      <div className="mt-auto pt-4">
         <Button
           onClick={() => {
             addItem(product);
             toast.success(`${product.title} added to cart`);
           }}
-          className="bg-beige w-full hover:bg-brown transition-color mt-2 text-brown hover:text-white"
-        >
-          Order via Instagram
-        </Button>
-        <Button
-          onClick={() => {
-            addItem(product);
-            toast.success(`${product.title} added to cart`);
-          }}
-          className="bg-brown/90 w-full hover:bg-brown transition-colors mt-2"
+          className="bg-brown/90 w-full hover:bg-brown transition-colors"
         >
           Add to cart
         </Button>

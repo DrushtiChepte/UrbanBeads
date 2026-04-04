@@ -10,7 +10,7 @@ export default async function ProductsPage() {
   }
 
   return (
-    <section className="min-h-screen px-6 md:px-10 max-w-7xl mx-auto py-10 mt-20">
+    <section className="min-h-screen px-4 md:px-10 max-w-7xl mx-auto py-10 mt-20">
       <div className="mb-8">
         <p className="text-sm uppercase tracking-[0.3em] text-brown/60">
           UrbanBeads collection
@@ -19,7 +19,7 @@ export default async function ProductsPage() {
           Shop all handcrafted pieces
         </h1>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-1">
         {products.length === 0 ? (
           <p className="text-center text-gray-500">No products found</p>
         ) : (
