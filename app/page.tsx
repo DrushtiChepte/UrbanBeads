@@ -1,3 +1,4 @@
+import CustomJewelryStrip from "@/components/CustomJewelryStrip";
 import FeaturesStrip from "@/components/FeaturesStrip";
 import Hero from "@/components/Hero";
 import ProductSections from "@/components/ProductSections";
@@ -16,6 +17,7 @@ export default async function Home() {
         <div>
           <Shop />
         </div>
+        <CustomJewelryStrip />
         {products.length > 0 ? <ProductSections products={products} /> : null}
       </div>
       <div className="mx-0">

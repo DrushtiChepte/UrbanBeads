@@ -19,9 +19,17 @@ export default async function ProductsPage() {
           Shop all handcrafted pieces
         </h1>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-1">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2">
         {products.length === 0 ? (
-          <p className="text-center text-gray-500">No products found</p>
+          <div className="col-span-full text-center py-16">
+            <p className="text-lg text-brown font-medium">
+              Nothing here yet ✨
+            </p>
+
+            <p className="text-sm text-brown/60 mt-2">
+              Try a different category or explore our latest pieces.
+            </p>
+          </div>
         ) : (
           products.map((product) => (
             <ProductCard key={product.slug} product={product} />
