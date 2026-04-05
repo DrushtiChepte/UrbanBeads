@@ -1,4 +1,10 @@
-import { Lato, Playfair_Display } from "next/font/google";
+import {
+  Lato,
+  Playfair_Display,
+  Imperial_Script,
+  Pinyon_Script,
+} from "next/font/google";
+// @ts-ignore
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "@/components/Footer";
@@ -18,6 +24,12 @@ const lato = Lato({
   weight: ["300", "400", "700"],
 });
 
+const pinyonScript = Pinyon_Script({
+  variable: "--font-pinyon",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export const metadata = {
   title: "Urban Beads",
   description: "Elegant handcrafted jewelry by Urban Beads",
@@ -31,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${lato.variable} antialiased min-h-screen`}
+        className={`${playfair.variable} ${lato.variable} ${pinyonScript.variable} antialiased min-h-screen`}
       >
         <AuthProvider>
           <CartProvider>

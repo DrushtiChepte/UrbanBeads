@@ -80,7 +80,10 @@ const Sidebar = ({ setFilter, filter }: Props) => {
 
             {/* 🔥 NAV ITEMS */}
             <div className="p-4 space-y-2">
-              {renderNavButton({ label: "All", isActive: filter === "All" })}
+              {renderNavButton({
+                label: "All Products",
+                isActive: filter === "All Products",
+              })}
 
               {categories.map((cat) => (
                 <div key={cat.title}>
@@ -123,6 +126,10 @@ const Sidebar = ({ setFilter, filter }: Props) => {
 
         {/* Navigation */}
         <nav className="flex-1 px-4 py-6 space-y-2">
+          {renderNavButton({
+            label: "All Products",
+            isActive: filter === "All Products",
+          })}
           {categories.map((cat) => (
             <div key={cat.title}>
               {renderNavButton({

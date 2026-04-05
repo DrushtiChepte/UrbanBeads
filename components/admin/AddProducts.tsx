@@ -4,11 +4,17 @@ import ImageUploader from "./ImageUploader";
 import { Button } from "../ui/button";
 import { addProduct } from "@/lib/product";
 import { toast } from "sonner";
+import { categories as categoryOptions } from "@/lib/constants";
+
+const selectableCategories = categoryOptions.filter(
+  (category) => category.slug !== "all",
+);
 
 const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
   const [images, setImages] = useState<File[]>([]);
   const [videos, setVideos] = useState<File[]>([]);
-  const [category, setCategory] = useState("");
+  const [primaryCategory, setPrimaryCategory] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState<number>(0);
   const [loading, setLoading] = useState(false);
@@ -34,7 +40,7 @@ const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!category || !title || price <= 0 || images.length === 0) {
+    if (!primaryCategory || !title || price <= 0 || images.length === 0) {
       toast("Please fill in all fields and upload at least one image.");
       return;
     }
@@ -47,7 +53,8 @@ const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
       await addProduct({
         images,
         videos,
-        category,
+        primaryCategory,
+        categories: selectedCategories,
         title,
         price,
       });
@@ -58,7 +65,8 @@ const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
       // reset
       setImages([]);
       setVideos([]);
-      setCategory("");
+      setPrimaryCategory("");
+      setSelectedCategories([]);
       setTitle("");
       setPrice(0);
     } catch (error) {
@@ -75,25 +83,74 @@ const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
         <ImageUploader onChange={handleFilesChange} maxFiles={5} />
 
         <label>
-          Category:
+          Primary Category:
           <select
-            value={category}
-            onChange={(e) =>
-              setCategory(e.target.value.toLowerCase().replace(/\s+/g, "-"))
-            }
+            value={primaryCategory}
+            onChange={(e) => {
+              const nextPrimaryCategory = e.target.value;
+              setPrimaryCategory(nextPrimaryCategory);
+              setSelectedCategories((currentCategories) =>
+                currentCategories.includes(nextPrimaryCategory)
+                  ? currentCategories
+                  : [...currentCategories, nextPrimaryCategory],
+              );
+            }}
             required
             className="border p-2 w-full mt-1 rounded"
           >
             <option value="">Select a category</option>
-            <option value="Necklaces">Necklaces</option>
-            <option value="Bracelets">Bracelets</option>
-            <option value="Anklets">Anklets</option>
-            <option value="Phone-Charms">Phone Charms</option>
-            <option value="Bag-Charms">Bag Charms</option>
-            <option value="keychains">keychains</option>
-            <option value="Earrings">Earrings</option>
+            {selectableCategories.map((category) => (
+              <option key={category.slug} value={category.slug}>
+                {category.title}
+              </option>
+            ))}
           </select>
         </label>
+
+        <fieldset className="space-y-2">
+          <legend className="text-sm font-medium">Show In Categories:</legend>
+          <div className="grid grid-cols-2 gap-2 rounded border p-3">
+            {selectableCategories.map((category) => (
+              <label
+                key={category.slug}
+                className="flex items-center gap-2 text-sm"
+              >
+                <input
+                  type="checkbox"
+                  checked={
+                    selectedCategories.includes(category.slug) ||
+                    primaryCategory === category.slug
+                  }
+                  onChange={(event) => {
+                    if (event.target.checked) {
+                      setSelectedCategories((currentCategories) =>
+                        currentCategories.includes(category.slug)
+                          ? currentCategories
+                          : [...currentCategories, category.slug],
+                      );
+                      return;
+                    }
+
+                    if (primaryCategory === category.slug) {
+                      return;
+                    }
+
+                    setSelectedCategories((currentCategories) =>
+                      currentCategories.filter(
+                        (selectedCategory) =>
+                          selectedCategory !== category.slug,
+                      ),
+                    );
+                  }}
+                />
+                <span>{category.title}</span>
+              </label>
+            ))}
+          </div>
+          <p className="text-xs text-brown/70">
+            The primary category controls the product URL and storage folder.
+          </p>
+        </fieldset>
 
         <label>
           Title:

@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Sidebar from "@/components/admin/Sidebar";
+import { categories as categoryOptions } from "@/lib/constants";
 
 export default function AdminPage() {
   const [productsLoading, setProductsLoading] = useState(true);
@@ -20,7 +21,7 @@ export default function AdminPage() {
   const [activeImage, setActiveImage] = useState<Record<string, number>>({});
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState("All Products");
 
   const { isAdmin, isLoading } = useAuth();
   const router = useRouter();
@@ -73,8 +74,11 @@ export default function AdminPage() {
   const filteredProducts =
     filter === "All Products"
       ? products
-      : products.filter(
-          (p) => p.category.toLowerCase() === filter.toLowerCase(),
+      : products.filter((product) =>
+          product.categories.includes(
+            categoryOptions.find((category) => category.title === filter)?.slug ||
+              filter.toLowerCase(),
+          ),
         );
 
   const handleDelete = async (slug: string) => {
@@ -191,7 +195,12 @@ export default function AdminPage() {
 
                 {/* Info */}
                 <div className="p-4 flex flex-col gap-2">
-                  <p className="text-brown/50">Category: {product.category}</p>
+                  <p className="text-brown/50">
+                    Primary: {product.primary_category}
+                  </p>
+                  <p className="text-brown/50 text-sm">
+                    Also in: {product.categories.join(", ")}
+                  </p>
                   <h2 className="text-md text-brown line-clamp-2">
                     {product.title}
                   </h2>

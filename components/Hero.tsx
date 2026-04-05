@@ -17,14 +17,26 @@ const Hero = () => {
       <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/20 to-black/60"></div>
 
       {/* Content */}
-      <div className="relative z-10 text-center px-6 max-w-3xl flex flex-col items-center gap-6 animate-fadeUp">
+      <div className="relative z-10 text-center px-6 max-w-3xl flex flex-col items-center gap-2 lg:gap-4 animate-fadeUp">
         {/* Heading */}
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-white drop-shadow-lg leading-tight">
-          Beaded with Love
+        <h1 className="text-2xl md:text-6xl lg:text-[4rem] tracking-tight text-white drop-shadow-lg leading-tight font-primary uppercase text-nowrap">
+          <span className="font-pinyon text-6xl md:text-8xl lg:text-9xl">
+            B
+          </span>
+          eaded
+          <span className="font-pinyon text-6xl md:text-8xl lg:text-9xl">
+            W
+          </span>{" "}
+          ith
+          <span className="font-pinyon text-6xl md:text-8xl lg:text-9xl">
+            {" "}
+            L
+          </span>
+          ove
         </h1>
 
         {/* Subheading */}
-        <p className="text-sm md:text-lg text-white/90 drop-shadow-md max-w-xl">
+        <p className="text-[8px] md:text-lg text-white/90 drop-shadow-md max-w-xl uppercase text-nowrap">
           Handcrafted pieces designed to elevate your everyday style.
         </p>
 

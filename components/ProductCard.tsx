@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/lib/product";
+import { getProductHref, Product } from "@/lib/product";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -50,10 +50,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       viewport={{ once: true }}
       className="group h-full py-2 flex flex-col"
     >
-      <Link
-        href={`/products/${product.category}/${product.slug}`}
-        className="flex flex-col grow"
-      >
+      <Link href={getProductHref(product)} className="flex flex-col grow">
         {/* Image */}
         <div className="relative">
           <div

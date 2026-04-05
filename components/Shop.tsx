@@ -8,7 +8,7 @@ const Shop = () => {
   useRevealOnScroll();
   return (
     <section id="shop" className="text-brown flex flex-col gap-5">
-      <div className="heading text-center my-5 fade-up">Shop by category</div>
+      <div className="heading text-center my-5 fade-up">Shop By Category</div>
       <div className="grid grid-cols-3 lg:grid-cols-6 2xl:grid-cols-6 gap-4 mt-5">
         {categories.map((category) => (
           <Link

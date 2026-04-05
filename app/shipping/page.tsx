@@ -23,7 +23,7 @@ const Shipping = () => {
       <h2 className="font-semibold mt-6 mb-1">Shipping Charges</h2>
       <p className="mb-4">
         <strong>Free shipping</strong> on orders above ₹999. For smaller orders,
-        shipping charges will be shared during order confirmation on WhatsApp.
+        shipping charges will be shared during order confirmation on Instagram.
       </p>
 
       <h2 className="font-semibold mt-6 mb-1">Returns & Replacement</h2>
@@ -38,13 +38,12 @@ const Shipping = () => {
 
       <h2 className="font-semibold mt-6 mb-1">Tracking</h2>
       <p className="mb-4">
-        Tracking details will be shared on WhatsApp once the parcel is shipped.
+        Tracking details will be shared on Instagram once the parcel is shipped.
       </p>
 
       <h2 className="font-semibold mt-6 mb-1">Need help?</h2>
       <p className="mb-4">
-        Message us anytime on WhatsApp or Instagram — we’re always happy to
-        help!
+        Message us anytime on Instagram — we’re always happy to help!
       </p>
     </div>
   );

@@ -10,7 +10,7 @@
   --color-green: #9da399;
   --color-background: #fcf7ed;
   --font-primary: "Playfair Display", serif;
-  --font-secondary: "Lato", sans-serif;
+  --font-secondary: "Josefin Sans", sans-serif;
 }
 
 @layer components {
@@ -46,6 +46,10 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.font-pinyon {
+  font-family: var(--font-pinyon);
 }
 
 .fade-up {

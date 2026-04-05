@@ -9,7 +9,7 @@ type CartItem = {
   title: string;
   price: number;
   image: string;
-  category: string;
+  primaryCategory: string;
   quantity: number;
 };
 
@@ -70,7 +70,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             title: product.title,
             price: product.price,
             image: product.images?.[0] || "/images/placeholder.png",
-            category: product.category,
+            primaryCategory: product.primary_category,
             quantity,
           },
         ];

@@ -54,7 +54,7 @@ export default function FeaturesStrip() {
   };
   return (
     <section className="py-10 my-20 bg-[#ddd8c6]">
-      <div className="hidden md:grid grid-cols-6 gap-6 max-w-6xl mx-auto">
+      <div className="hidden md:grid grid-cols-5 gap-6 max-w-6xl mx-auto">
         {featuresList.map((f) => (
           <div key={f.title} className="flex flex-col items-center gap-3">
             <div className="text-4xl mb-1 text-rose-500">{f.icon}</div>

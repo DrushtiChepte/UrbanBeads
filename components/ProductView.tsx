@@ -1,7 +1,10 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { buildInstagramOrderLink } from "@/lib/instagram";
+import {
+  buildInstagramOrderMessage,
+  INSTAGRAM_PROFILE_URL,
+} from "@/lib/instagram";
 import { Product } from "@/lib/product";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -17,7 +20,7 @@ export default function ProductView({ product }: { product: Product }) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { addItem, items } = useCart();
 
-  const instagramOrderLink = buildInstagramOrderLink(
+  const instagramOrderMessage = buildInstagramOrderMessage(
     items.length > 0
       ? items.map((item) => ({
           title: item.title,
@@ -26,6 +29,18 @@ export default function ProductView({ product }: { product: Product }) {
         }))
       : [{ title: product.title, quantity: 1, price: product.price }],
   );
+
+  const handleInstagramOrder = async () => {
+    try {
+      await navigator.clipboard.writeText(instagramOrderMessage);
+      toast.success("Order message copied. Paste it in the Instagram DM.");
+    } catch {
+      toast.error("Couldn't copy the order message. Please try again.");
+      return;
+    }
+
+    window.open(INSTAGRAM_PROFILE_URL, "_blank", "noopener,noreferrer");
+  };
 
   const scrollToIndex = (index: number) => {
     if (!scrollRef.current) return;
@@ -152,14 +167,18 @@ export default function ProductView({ product }: { product: Product }) {
             Add to cart
           </button>
 
-          <a
-            href={instagramOrderLink}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={handleInstagramOrder}
             className="block border border-brown text-brown py-3 rounded-full text-center hover:bg-brown/5 transition"
           >
             Order via Instagram
-          </a>
+          </button>
+
+          <p className="text-sm text-brown/70 leading-6">
+            Your order message will be copied. Open Instagram DM and paste it
+            to place your order.
+          </p>
 
           <div>
             <ProductAccordion />

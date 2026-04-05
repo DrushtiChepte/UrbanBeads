@@ -5,11 +5,61 @@ export type Product = {
   title: string;
   slug: string;
   price: number;
-  category: string;
+  primary_category: string;
+  categories: string[];
   images: string[];
   videos: string[];
   created_at: string;
 };
+
+type ProductInsertInput = {
+  images: File[];
+  videos: File[];
+  title: string;
+  primaryCategory: string;
+  categories: string[];
+  price: number;
+};
+
+const normalizeCategories = (
+  primaryCategory: string,
+  categories: string[] = [],
+) => {
+  const normalizedPrimaryCategory = primaryCategory.toLowerCase().trim();
+
+  return Array.from(
+    new Set(
+      [normalizedPrimaryCategory, ...categories]
+        .map((category) => category.toLowerCase().trim())
+        .filter(Boolean),
+    ),
+  );
+};
+
+const normalizeProduct = (product: Partial<Product> & Record<string, unknown>) => {
+  const primaryCategory =
+    typeof product.primary_category === "string" ? product.primary_category : "";
+
+  const categoryList = Array.isArray(product.categories)
+    ? product.categories.filter(
+        (category): category is string => typeof category === "string",
+      )
+    : primaryCategory
+      ? [primaryCategory]
+      : [];
+
+  return {
+    ...product,
+    primary_category: primaryCategory,
+    categories: normalizeCategories(primaryCategory, categoryList),
+  } as Product;
+};
+
+export const getPrimaryCategory = (product: Pick<Product, "primary_category">) =>
+  product.primary_category;
+
+export const getProductHref = (product: Pick<Product, "slug" | "primary_category">) =>
+  `/products/${getPrimaryCategory(product)}/${product.slug}`;
 
 export const fetchProducts = async () => {
   const { data, error } = await supabase
@@ -19,18 +69,18 @@ export const fetchProducts = async () => {
   if (error) {
     console.error("Error fetching products:", error);
   }
-  return data || [];
+  return (data || []).map((product) => normalizeProduct(product));
 };
 
 export async function fetchProductsByCategory(category: string) {
   const { data, error } = await supabase
     .from("products")
     .select("*")
-    .eq("category", category);
+    .contains("categories", [category]);
   if (error) {
     console.error("Error fetching products:", error);
   }
-  return data || [];
+  return (data || []).map((product) => normalizeProduct(product));
 }
 
 const generateSlug = (title: string) => {
@@ -44,16 +94,13 @@ export const addProduct = async ({
   images,
   videos,
   title,
-  category,
+  primaryCategory,
+  categories,
   price,
-}: {
-  images: File[];
-  videos: File[];
-  title: string;
-  category: string;
-  price: number;
-}) => {
+}: ProductInsertInput) => {
   try {
+    const normalizedCategories = normalizeCategories(primaryCategory, categories);
+    const storageCategory = normalizedCategories[0];
     const uploadedImageUrls: string[] = [];
     for (const image of images) {
       const cleanName = image.name
@@ -61,7 +108,7 @@ export const addProduct = async ({
         .replace(/\s+/g, "-")
         .replace(/[^a-z0-9.\-]/g, "");
 
-      const fileName = `${category.toLowerCase()}/${crypto.randomUUID()}-${cleanName}`;
+      const fileName = `${storageCategory}/${crypto.randomUUID()}-${cleanName}`;
 
       const { data, error } = await supabase.storage
         .from("All-Products")
@@ -88,7 +135,7 @@ export const addProduct = async ({
         .replace(/\s+/g, "-") // replace spaces with -
         .replace(/[^a-z0-9.\-]/g, ""); // remove special characters
 
-      const filePath = `${category.toLowerCase()}/${crypto.randomUUID()}-${cleanName}`;
+      const filePath = `${storageCategory}/${crypto.randomUUID()}-${cleanName}`;
 
       const { error } = await supabase.storage
         .from("All-Products")
@@ -110,7 +157,8 @@ export const addProduct = async ({
         title,
         slug,
         price,
-        category,
+        primary_category: storageCategory,
+        categories: normalizedCategories,
         images: uploadedImageUrls,
         videos: uploadedVideoUrls,
       },
@@ -134,20 +182,18 @@ export const editProduct = async ({
   newVideos,
   existingVideos,
   title,
-  category,
+  primaryCategory,
+  categories,
   price,
-}: {
+}: ProductInsertInput & {
   oldSlug: string;
-  newImages: File[];
   existingImages: string[];
-  newVideos: File[];
   existingVideos: string[];
-  title: string;
-  category: string;
-  price: number;
 }) => {
   try {
     const bucket = "All-Products";
+    const normalizedCategories = normalizeCategories(primaryCategory, categories);
+    const storageCategory = normalizedCategories[0];
 
     //fetch old files
     const { data: oldMedia, error: fetchError } = await supabase
@@ -200,7 +246,7 @@ export const editProduct = async ({
           .replace(/\s+/g, "-")
           .replace(/[^a-z0-9.\-]/g, "");
 
-        const fileName = `${category.toLowerCase()}/${crypto.randomUUID()}-${cleanName}`;
+        const fileName = `${storageCategory}/${crypto.randomUUID()}-${cleanName}`;
 
         const { error } = await supabase.storage
           .from("All-Products")
@@ -228,7 +274,7 @@ export const editProduct = async ({
           .replace(/\s+/g, "-") // replace spaces with -
           .replace(/[^a-z0-9.\-]/g, ""); // remove special characters
 
-        const filePath = `${category.toLowerCase()}/${crypto.randomUUID()}-${cleanName}`;
+        const filePath = `${storageCategory}/${crypto.randomUUID()}-${cleanName}`;
         const { error } = await supabase.storage
 
           .from("All-Products")
@@ -253,7 +299,8 @@ export const editProduct = async ({
       .update({
         title,
         slug: newSlug,
-        category,
+        primary_category: storageCategory,
+        categories: normalizedCategories,
         price,
         images: finalImages,
         videos: finalVideos,

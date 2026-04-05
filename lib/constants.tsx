@@ -95,6 +95,7 @@ export const footerLinks = [
   { title: "About", path: "/about" },
   { title: "Shop", path: "/#shop" },
   { title: "Privacy Policy", path: "/privacy" },
+  { title: "Return Policy", path: "/return-policy" },
   { title: "Shipping Policy", path: "/shipping" },
 ];
 
@@ -145,7 +146,7 @@ export const featuresList = [
   },
   {
     title: "100% Payment Secure",
-    subtitle: "WhatsApp confirmation",
+    subtitle: "Instagram confirmation",
     icon: (
       <svg
         className="w-10 h-10"
@@ -190,31 +191,6 @@ export const featuresList = [
         />
         <circle cx="7.5" cy="18.5" r="1.5" strokeWidth="1.5" />
         <circle cx="18.5" cy="18.5" r="1.5" strokeWidth="1.5" />
-      </svg>
-    ),
-  },
-  {
-    title: "7 Days Return Policy",
-    subtitle: "For damaged items",
-    icon: (
-      <svg
-        className="w-10 h-10"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-      >
-        <path
-          d="M21 12a9 9 0 10-9 9"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M21 3v6h-6"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
       </svg>
     ),
   },

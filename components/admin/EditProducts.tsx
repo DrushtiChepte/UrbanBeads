@@ -7,16 +7,22 @@ import ImageUploader from "./ImageUploader";
 import { editProduct } from "@/lib/product";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
+import { categories as categoryOptions } from "@/lib/constants";
 
 type Product = {
   id?: string;
   title: string;
-  category: string;
+  primary_category: string;
+  categories: string[];
   price: number;
   images: string[];
   videos: string[] | string;
   slug: string;
 };
+
+const selectableCategories = categoryOptions.filter(
+  (category) => category.slug !== "all",
+);
 
 const EditProducts = ({
   product,
@@ -28,7 +34,12 @@ const EditProducts = ({
   onSuccess: () => void;
 }) => {
   const [title, setTitle] = useState(product.title);
-  const [category, setCategory] = useState(product.category);
+  const [primaryCategory, setPrimaryCategory] = useState(product.primary_category);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    product.categories.length > 0
+      ? product.categories
+      : [product.primary_category],
+  );
   const [price, setPrice] = useState(product.price);
   const [loading, setLoading] = useState(false);
 
@@ -91,7 +102,8 @@ const EditProducts = ({
         newVideos,
         existingVideos,
         title,
-        category,
+        primaryCategory,
+        categories: selectedCategories,
         price,
       });
 
@@ -194,12 +206,68 @@ const EditProducts = ({
           ))}
       </div>
 
-      <label>Category:</label>
-      <input
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
+      <label>Primary Category:</label>
+      <select
+        value={primaryCategory}
+        onChange={(e) => {
+          const nextPrimaryCategory = e.target.value;
+          setPrimaryCategory(nextPrimaryCategory);
+          setSelectedCategories((currentCategories) =>
+            currentCategories.includes(nextPrimaryCategory)
+              ? currentCategories
+              : [...currentCategories, nextPrimaryCategory],
+          );
+        }}
         className="border p-2 w-full rounded"
-      />
+      >
+        {selectableCategories.map((category) => (
+          <option key={category.slug} value={category.slug}>
+            {category.title}
+          </option>
+        ))}
+      </select>
+
+      <div className="space-y-2">
+        <label>Show In Categories:</label>
+        <div className="grid grid-cols-2 gap-2 rounded border p-3">
+          {selectableCategories.map((category) => (
+            <label
+              key={category.slug}
+              className="flex items-center gap-2 text-sm"
+            >
+              <input
+                type="checkbox"
+                checked={
+                  selectedCategories.includes(category.slug) ||
+                  primaryCategory === category.slug
+                }
+                onChange={(event) => {
+                  if (event.target.checked) {
+                    setSelectedCategories((currentCategories) =>
+                      currentCategories.includes(category.slug)
+                        ? currentCategories
+                        : [...currentCategories, category.slug],
+                    );
+                    return;
+                  }
+
+                  if (primaryCategory === category.slug) {
+                    return;
+                  }
+
+                  setSelectedCategories((currentCategories) =>
+                    currentCategories.filter(
+                      (selectedCategory) =>
+                        selectedCategory !== category.slug,
+                    ),
+                  );
+                }}
+              />
+              <span>{category.title}</span>
+            </label>
+          ))}
+        </div>
+      </div>
 
       <label>Title:</label>
       <input

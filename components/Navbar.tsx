@@ -107,7 +107,9 @@ const Navbar = () => {
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <span className="text-lg font-secondary">{c.title}</span>
+                        <span className="text-lg font-secondary">
+                          {c.title}
+                        </span>
                       </Link>
                     ))}
                   </div>

@@ -1,5 +1,5 @@
 import FeatureSection from "@/components/FeatureSection";
-import { Product } from "@/lib/product";
+import { getProductHref, Product } from "@/lib/product";
 
 type ProductSectionsProps = {
   products: Product[];
@@ -19,7 +19,7 @@ export default function ProductSections({ products }: ProductSectionsProps) {
         items={newArrivals.map((product) => ({
           title: product.title,
           image: product.images?.[0] || "/images/placeholder.png",
-          href: `/products/${product.category}/${product.slug}`,
+          href: getProductHref(product),
           price: product.price,
         }))}
       />
@@ -29,7 +29,7 @@ export default function ProductSections({ products }: ProductSectionsProps) {
         items={browseMore.map((product) => ({
           title: product.title,
           image: product.images?.[0] || "/images/placeholder.png",
-          href: `/products/${product.category}/${product.slug}`,
+          href: getProductHref(product),
           price: product.price,
         }))}
       />

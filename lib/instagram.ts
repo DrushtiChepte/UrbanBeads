@@ -5,13 +5,17 @@ type InstagramOrderItem = {
 };
 
 const INSTAGRAM_HANDLE = "__urbanbeads";
+export const SHIPPING_FEE = 99;
+export const INSTAGRAM_PROFILE_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
-export function buildInstagramOrderLink(items: InstagramOrderItem[]) {
+export function buildInstagramOrderMessage(items: InstagramOrderItem[]) {
   const normalizedItems = items.filter((item) => item.quantity > 0);
   const subtotal = normalizedItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0,
   );
+  const shipping = normalizedItems.length > 0 ? SHIPPING_FEE : 0;
+  const total = subtotal + shipping;
 
   const orderSummary = normalizedItems
     .map(
@@ -26,8 +30,16 @@ export function buildInstagramOrderLink(items: InstagramOrderItem[]) {
     "Items:",
     orderSummary || "- No items selected yet",
     "",
-    `Total: Rs. ${subtotal}`,
+    `Subtotal: Rs. ${subtotal}`,
+    `Shipping: Rs. ${shipping}`,
+    `Total: Rs. ${total}`,
   ].join("\n");
+
+  return message;
+}
+
+export function buildInstagramOrderLink(items: InstagramOrderItem[]) {
+  const message = buildInstagramOrderMessage(items);
 
   return `https://www.instagram.com/direct/new/?username=${INSTAGRAM_HANDLE}&text=${encodeURIComponent(
     message,

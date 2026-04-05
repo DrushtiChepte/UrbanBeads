@@ -1,5 +1,5 @@
 import ProductView from "@/components/ProductView";
-import { fetchProducts } from "@/lib/product";
+import { fetchProducts, getPrimaryCategory } from "@/lib/product";
 
 interface PageProps {
   params: Promise<{
@@ -14,7 +14,8 @@ export default async function ProductPage({ params }: PageProps) {
   const products = await fetchProducts();
 
   const product = products.find(
-    (p) => p.slug === slug && p.category === category,
+    (product) =>
+      product.slug === slug && getPrimaryCategory(product) === category,
   );
 
   if (!product) {

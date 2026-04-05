@@ -13,8 +13,9 @@ export default async function CategoryPage({ params }: PageProps) {
   const products = await fetchProducts();
 
   const filteredProducts =
-    slug === "all" ? products : products.filter((p) => p.category === slug);
-  console.log("slug:", slug);
+    slug === "all"
+      ? products
+      : products.filter((product) => product.categories.includes(slug));
 
   return (
     <main className="mt-30 px-5 lg:max-w-7xl lg:mx-auto min-h-screen text-brown">
