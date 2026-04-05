@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 
@@ -13,21 +13,15 @@ export default function ImageUploader({
   maxFiles = 5,
 }: ImageUploaderProps) {
   const [files, setFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<{ url: string; type: string }[]>([]);
-
-  /* Handle drop */
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      setFiles((prev) => {
-        const combined = [...prev, ...acceptedFiles];
-        return combined.slice(0, maxFiles);
+      setFiles((prevFiles) => {
+        const combinedFiles = [...prevFiles, ...acceptedFiles].slice(0, maxFiles);
+        onChange(combinedFiles);
+        return combinedFiles;
       });
-
-      const combined = [...files, ...acceptedFiles].slice(0, maxFiles);
-
-      onChange(combined);
     },
-    [files, maxFiles, onChange],
+    [maxFiles, onChange],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -39,28 +33,31 @@ export default function ImageUploader({
     maxFiles,
   });
 
-  /* Create previews */
+  const previews = useMemo(
+    () =>
+      files.map((file) => ({
+        url: URL.createObjectURL(file),
+        type: file.type,
+      })),
+    [files],
+  );
+
   useEffect(() => {
-    const urls = files.map((file) => ({
-      url: URL.createObjectURL(file),
-      type: file.type,
-    }));
-
-    setPreviews(urls);
-
     return () => {
-      urls.forEach((item) => URL.revokeObjectURL(item.url));
+      previews.forEach((item) => URL.revokeObjectURL(item.url));
     };
-  }, [files]);
+  }, [previews]);
 
-  /* Remove file */
   const removeImage = (index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setFiles((prevFiles) => {
+      const nextFiles = prevFiles.filter((_, itemIndex) => itemIndex !== index);
+      onChange(nextFiles);
+      return nextFiles;
+    });
   };
 
   return (
     <div className="w-full">
-      {/* Drop zone */}
       <div
         {...getRootProps()}
         className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition
@@ -83,7 +80,6 @@ export default function ImageUploader({
         </p>
       </div>
 
-      {/* Preview grid */}
       <div className="mt-3 grid grid-cols-4 gap-2">
         {previews.map((item, index) => (
           <div
@@ -93,8 +89,9 @@ export default function ImageUploader({
             {item.type.startsWith("image") ? (
               <Image
                 src={item.url}
-                alt="preview"
+                alt={`Preview ${index + 1}`}
                 fill
+                unoptimized
                 className="object-cover"
               />
             ) : (

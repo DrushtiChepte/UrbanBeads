@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Image from "next/image";
 import ImageUploader from "./ImageUploader";
 
 import { editProduct } from "@/lib/product";
@@ -8,11 +9,12 @@ import { toast } from "sonner";
 import { Button } from "../ui/button";
 
 type Product = {
+  id?: string;
   title: string;
   category: string;
   price: number;
   images: string[];
-  videos: string[];
+  videos: string[] | string;
   slug: string;
 };
 
@@ -44,13 +46,6 @@ const EditProducts = ({
   );
 
   const [newVideos, setNewVideos] = useState<File[]>([]);
-
-  useEffect(() => {
-    return () => {
-      newImages.forEach((file) => URL.revokeObjectURL(file as any));
-      newVideos.forEach((file) => URL.revokeObjectURL(file as any));
-    };
-  }, [newImages, newVideos]);
 
   const handleFiles = (files: File[]) => {
     const imgs = files.filter((f) => f.type.startsWith("image"));
@@ -110,11 +105,6 @@ const EditProducts = ({
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    console.log("existingVideos:", existingVideos);
-  }, [existingVideos]);
-
   return (
     <form onSubmit={handleUpdate} className="space-y-3">
       <ImageUploader onChange={handleFiles} maxFiles={5} />
@@ -124,10 +114,14 @@ const EditProducts = ({
           const preview = URL.createObjectURL(file);
 
           return (
-            <img
+            <Image
               key={i}
               src={preview}
+              alt={`New image preview ${i + 1}`}
               onLoad={() => URL.revokeObjectURL(preview)}
+              width={80}
+              height={80}
+              unoptimized
               className="w-20 h-20 object-cover rounded border"
             />
           );
@@ -151,7 +145,13 @@ const EditProducts = ({
       <div className="flex gap-2 flex-wrap">
         {existingImages.map((img, i) => (
           <div key={i} className="group relative">
-            <img src={img} className="w-20 h-20 object-cover rounded border" />
+            <Image
+              src={img}
+              alt={`Existing image ${i + 1}`}
+              width={80}
+              height={80}
+              className="w-20 h-20 object-cover rounded border"
+            />
 
             <Button
               type="button"

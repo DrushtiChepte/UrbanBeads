@@ -246,36 +246,6 @@ export const featuresList = [
   },
 ];
 
-export const tempProducts = [
-  {
-    id: 1,
-    name: "The Gothel Necklace",
-    slug: "the-gothel-necklace",
-    price: 399,
-    image: "/images/placeholder.png",
-    category: "Necklaces",
-    description: "A beautiful handmade beaded necklace.",
-  },
-  {
-    id: 2,
-    name: "Coquette Charm",
-    slug: "coquette-charm",
-    price: 119,
-    image: "/images/placeholder.png",
-    category: "Phone Charms",
-    description: "A stylish charm  to complement Your phone.",
-  },
-  {
-    id: 3,
-    name: "The Blush Charm",
-    slug: "the-blush-charm",
-    price: 199,
-    image: "/images/placeholder.png",
-    category: "Phone Charms",
-    description: "A cute blush-themed phone charm.",
-  },
-];
-
 export const ProductDetails = [
   {
     title: "About Findings",

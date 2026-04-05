@@ -1,4 +1,3 @@
-import Sidebar from "@/components/admin/Sidebar";
 import Footer from "@/components/admin/Footer";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

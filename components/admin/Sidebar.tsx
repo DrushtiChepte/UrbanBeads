@@ -36,7 +36,7 @@ const Sidebar = ({ setFilter, filter }: Props) => {
   };
 
   // 🔥 Reusable nav button
-  const NavButton = ({
+  const renderNavButton = ({
     label,
     isActive,
   }: {
@@ -80,14 +80,15 @@ const Sidebar = ({ setFilter, filter }: Props) => {
 
             {/* 🔥 NAV ITEMS */}
             <div className="p-4 space-y-2">
-              <NavButton label="All" isActive={filter === "All"} />
+              {renderNavButton({ label: "All", isActive: filter === "All" })}
 
               {categories.map((cat) => (
-                <NavButton
-                  key={cat.title}
-                  label={cat.title}
-                  isActive={filter === cat.title}
-                />
+                <div key={cat.title}>
+                  {renderNavButton({
+                    label: cat.title,
+                    isActive: filter === cat.title,
+                  })}
+                </div>
               ))}
             </div>
 
@@ -122,14 +123,13 @@ const Sidebar = ({ setFilter, filter }: Props) => {
 
         {/* Navigation */}
         <nav className="flex-1 px-4 py-6 space-y-2">
-          <NavButton label="All" isActive={filter === "All"} />
-
           {categories.map((cat) => (
-            <NavButton
-              key={cat.title}
-              label={cat.title}
-              isActive={filter === cat.title}
-            />
+            <div key={cat.title}>
+              {renderNavButton({
+                label: cat.title,
+                isActive: filter === cat.title,
+              })}
+            </div>
           ))}
         </nav>
 

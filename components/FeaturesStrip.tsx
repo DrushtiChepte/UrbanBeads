@@ -3,7 +3,7 @@
 import { featuresList } from "@/lib/constants";
 import { useEffect, useRef, useState } from "react";
 
-export default function FeaturesStrip({ useImage = false }) {
+export default function FeaturesStrip() {
   const AUTO_SLIDE_MS = 2500;
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -15,22 +15,29 @@ export default function FeaturesStrip({ useImage = false }) {
     setActiveIndex((index + featuresList.length) % featuresList.length);
   };
 
-  const next = () => goTo(activeIndex + 1);
-  const prev = () => goTo(activeIndex - 1);
+  const next = () =>
+    setActiveIndex((currentIndex) => (currentIndex + 1) % featuresList.length);
+  const prev = () =>
+    setActiveIndex(
+      (currentIndex) =>
+        (currentIndex - 1 + featuresList.length) % featuresList.length,
+    );
 
-  // Auto-slide
   useEffect(() => {
-    timerRef.current && clearInterval(timerRef.current);
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
     timerRef.current = setInterval(() => {
       next();
     }, AUTO_SLIDE_MS);
 
     return () => {
-      timerRef.current && clearInterval(timerRef.current);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
     };
-  }, [activeIndex]);
+  }, [activeIndex, AUTO_SLIDE_MS]);
 
-  // Touch swipe handlers
   const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -41,13 +48,12 @@ export default function FeaturesStrip({ useImage = false }) {
 
   const onTouchEnd = () => {
     const diff = touchStartX.current - touchEndX.current;
-    const threshold = 40; // px
+    const threshold = 40;
     if (diff > threshold) next();
     if (diff < -threshold) prev();
   };
   return (
     <section className="py-10 my-20 bg-[#ddd8c6]">
-      {/* Desktop: Grid */}
       <div className="hidden md:grid grid-cols-6 gap-6 max-w-6xl mx-auto">
         {featuresList.map((f) => (
           <div key={f.title} className="flex flex-col items-center gap-3">
@@ -59,7 +65,6 @@ export default function FeaturesStrip({ useImage = false }) {
           </div>
         ))}
       </div>
-      {/* Mobile: Slider */}
       <div className="md:hidden">
         <div
           className="overflow-hidden"
@@ -87,7 +92,6 @@ export default function FeaturesStrip({ useImage = false }) {
             ))}
           </div>
         </div>
-        {/* Dots */}
         <div className="mt-3 flex justify-center gap-2">
           {featuresList.map((_, i) => (
             <button

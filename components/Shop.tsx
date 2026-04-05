@@ -9,7 +9,6 @@ const Shop = () => {
   return (
     <section id="shop" className="text-brown flex flex-col gap-5">
       <div className="heading text-center my-5 fade-up">Shop by category</div>
-      {/* categories grid */}
       <div className="grid grid-cols-3 lg:grid-cols-6 2xl:grid-cols-6 gap-4 mt-5">
         {categories.map((category) => (
           <Link
@@ -22,9 +21,11 @@ const Shop = () => {
             className="flex flex-col items-center cursor-pointer hover:scale-105 transition duration-300 fade-up"
           >
             <div className="w-20 h-20 xl:w-28 xl:h-28 rounded-full overflow-hidden bg-[#f8f5f2] flex items-center justify-center">
-              <img
+              <Image
                 src={category.image}
                 alt={category.title}
+                width={112}
+                height={112}
                 className="w-full h-full object-cover"
               />
             </div>

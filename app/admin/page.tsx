@@ -4,7 +4,7 @@ import AddProducts from "@/components/admin/AddProducts";
 import EditProducts from "@/components/admin/EditProducts";
 import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
-import { deleteProduct, fetchProducts } from "@/lib/product";
+import { Product, deleteProduct, fetchProducts } from "@/lib/product";
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -16,9 +16,9 @@ import Sidebar from "@/components/admin/Sidebar";
 
 export default function AdminPage() {
   const [productsLoading, setProductsLoading] = useState(true);
-  const [products, setProducts] = useState<Array<any>>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [activeImage, setActiveImage] = useState<Record<string, number>>({});
-  const [editingProduct, setEditingProduct] = useState<any>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const [filter, setFilter] = useState("All");
 
@@ -33,15 +33,30 @@ export default function AdminPage() {
 
   const getProducts = async () => {
     setProductsLoading(true);
-    const products = await fetchProducts();
-    setProducts(products);
+    const fetchedProducts = await fetchProducts();
+    setProducts(fetchedProducts);
     setProductsLoading(false);
   };
 
   useEffect(() => {
-    if (isAdmin) {
-      getProducts();
-    }
+    if (!isAdmin) return;
+
+    let isMounted = true;
+
+    const loadProducts = async () => {
+      const fetchedProducts = await fetchProducts();
+
+      if (!isMounted) return;
+
+      setProducts(fetchedProducts);
+      setProductsLoading(false);
+    };
+
+    loadProducts();
+
+    return () => {
+      isMounted = false;
+    };
   }, [isAdmin]);
 
   if (isLoading || !isAdmin || productsLoading) {
@@ -56,7 +71,7 @@ export default function AdminPage() {
   }
 
   const filteredProducts =
-    filter === "All"
+    filter === "All Products"
       ? products
       : products.filter(
           (p) => p.category.toLowerCase() === filter.toLowerCase(),
@@ -78,14 +93,6 @@ export default function AdminPage() {
     }
   };
 
-  if (productsLoading) {
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <Loader />
-      </div>
-    );
-  }
-
   return (
     <section className="h-screen max-w-7xl mx-auto py-10 overflow-x-hidden scrollbar-hide">
       <Sidebar setFilter={setFilter} filter={filter} />
@@ -104,8 +111,8 @@ export default function AdminPage() {
             const videos = Array.isArray(product.videos) ? product.videos : [];
 
             const mixedMedia = [
-              ...images.map((url: string) => ({ type: "image", url })),
-              ...videos.map((url: string) => ({ type: "video", url })),
+              ...images.map((url) => ({ type: "image" as const, url })),
+              ...videos.map((url) => ({ type: "video" as const, url })),
             ];
 
             const activeIndex = activeImage[product.id] ?? 0;
@@ -152,10 +159,10 @@ export default function AdminPage() {
                     <button
                       key={index}
                       onClick={() =>
-                        setActiveImage({
-                          ...activeImage,
+                        setActiveImage((currentActiveImage) => ({
+                          ...currentActiveImage,
                           [product.id]: index,
-                        })
+                        }))
                       }
                       className={`w-12 h-12 rounded-lg overflow-hidden border transition-transform duration-300 hover:scale-110 ${
                         activeImage[product.id] === index
@@ -166,7 +173,7 @@ export default function AdminPage() {
                       {item.type === "image" ? (
                         <Image
                           src={item.url}
-                          alt="thumbnail"
+                          alt={`${product.title} preview ${index + 1}`}
                           width={48}
                           height={48}
                           className="object-cover w-full h-full"

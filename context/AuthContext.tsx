@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchUserEmail = async () => {
+  const syncUserEmail = async () => {
     const { data, error } = await supabase.auth.getUser();
     if (!data.user) {
       setIsAdmin(false);
@@ -52,14 +52,50 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    fetchUserEmail();
+    let isMounted = true;
+
+    const loadUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (!isMounted) return;
+
+      if (!data.user) {
+        setIsAdmin(false);
+        setIsLoading(false);
+        return;
+      }
+      if (error) {
+        console.error("Error fetching user:", error.message);
+        setIsAdmin(false);
+        setIsLoading(false);
+        return;
+      }
+      const userEmail = data.user.email?.toLowerCase() || "";
+      const isAuthorized = emailList.includes(userEmail);
+
+      if (!isAuthorized) {
+        toast.error("You are not authorized as admin");
+        await supabase.auth.signOut();
+        if (!isMounted) return;
+        setIsAdmin(false);
+        setIsLoading(false);
+        return;
+      }
+
+      setIsAdmin(true);
+      setIsLoading(false);
+    };
+
+    loadUser();
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(() => {
-      fetchUserEmail();
+      syncUserEmail();
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signInWithGoogle = async () => {
