@@ -21,6 +21,18 @@ type ProductInsertInput = {
   price: number;
 };
 
+type ProductUpdateInput = {
+  oldSlug: string;
+  newImages: File[];
+  existingImages: string[];
+  newVideos: File[];
+  existingVideos: string[];
+  title: string;
+  primaryCategory: string;
+  categories: string[];
+  price: number;
+};
+
 const normalizeCategories = (
   primaryCategory: string,
   categories: string[] = [],
@@ -185,11 +197,7 @@ export const editProduct = async ({
   primaryCategory,
   categories,
   price,
-}: ProductInsertInput & {
-  oldSlug: string;
-  existingImages: string[];
-  existingVideos: string[];
-}) => {
+}: ProductUpdateInput) => {
   try {
     const bucket = "All-Products";
     const normalizedCategories = normalizeCategories(primaryCategory, categories);
