@@ -3,7 +3,7 @@ import { navbar } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
 import { Twirl as Hamburger } from "hamburger-react";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/context/CartContext";
@@ -56,7 +56,9 @@ const Navbar = () => {
       }`}
     >
       <div className="absolute top-0 left-0 w-full z-50 transition-transform duration-400">
-        <SearchBar translatePosition={showSearch} />
+        <Suspense fallback={null}>
+          <SearchBar translatePosition={showSearch} />
+        </Suspense>
       </div>
       <nav
         className={`navbar ${
