@@ -226,26 +226,31 @@ export const ProductDetails = [
   {
     title: "About Findings",
     icon: <Snowflake size={16} />,
-    content: "Details about materials and construction.",
+    content:
+      "Our jewelry is crafted using high-quality materials including glass beads, acrylic charms, and durable elastic string. Each piece is lightweight, skin-friendly, and designed for everyday wear.\n\nPlease note that slight variations may occur due to the handmade nature of our products.",
   },
   {
     title: "Measurement Guides",
     icon: <Ruler size={16} />,
-    content: "Sizing and measurement information.",
+    content:
+      "Standard sizes:\n- Stretchable bracelets/Loop bracelets: Diameter approx. 5–7 cm (expandable due to stretchable string). Flexible fit for most wrists\n- Chain bracelets and Anklets: Approx. 15 cm length\n- Necklaces: Approx. 30 cm length\n - Keychain & Bag Charm: approx. 8-12 cm (can customise)\n - Earrings: 4-5 cm \n\nFor a perfect fit:\n- Measure your wrist using a thread or measuring tape\n- Add 0.5 to 1 inch for comfort\n\nIf you need a custom size, feel free to contact us before placing your order.",
   },
   {
     title: "Shipping",
     icon: <Truck size={16} />,
-    content: "Delivery timelines and charges.",
+    content:
+      "Orders are processed within 2-4 business days.\n\nDelivery time:\n- Within India: 5-7 business days\n\nYou will receive tracking details once your order is shipped.\n\nPlease ensure your shipping address is accurate to avoid delays.",
   },
   {
     title: "Notes",
     icon: <FileText size={16} />,
-    content: "Additional important notes.",
+    content:
+      "- All products are handmade with care\n- Colors may slightly vary due to lighting and screen settings\n- Custom orders may take additional time\n\nFor any queries, feel free to reach out to us on Instagram.",
   },
   {
     title: "Jewelry Care",
     icon: <Leaf size={16} />,
-    content: "Care instructions to maintain shine and durability.",
+    content:
+      "To keep your jewelry looking its best:\n\n- Avoid contact with water, perfumes, and chemicals\n- Store in a dry place\n- Handle with care to prevent stretching or breakage\n- Remove before sleeping or exercising\n\nProper care will help your jewelry last longer.",
   },
 ];

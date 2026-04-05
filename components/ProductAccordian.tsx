@@ -31,10 +31,10 @@ export default function ProductAccordion() {
 
             <div
               className={`overflow-hidden transition-all duration-300 ${
-                isOpen ? "max-h-40 opacity-100 pb-4" : "max-h-0 opacity-0"
+                isOpen ? "max-h-[32rem] opacity-100 pb-4" : "max-h-0 opacity-0"
               }`}
             >
-              <p className="text-sm text-brown/60 leading-relaxed pl-7 pr-2">
+              <p className="text-sm text-brown/60 leading-relaxed whitespace-pre-line pl-7 pr-2">
                 {item.content}
               </p>
             </div>
