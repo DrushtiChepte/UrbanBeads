@@ -13,6 +13,7 @@ export default function ImageUploader({
   maxFiles = 5,
 }: ImageUploaderProps) {
   const [files, setFiles] = useState<File[]>([]);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       setFiles((prevFiles) => {
@@ -56,6 +57,18 @@ export default function ImageUploader({
     });
   };
 
+  const moveFile = (fromIndex: number, toIndex: number) => {
+    if (fromIndex === toIndex) return;
+
+    setFiles((prevFiles) => {
+      const nextFiles = [...prevFiles];
+      const [movedFile] = nextFiles.splice(fromIndex, 1);
+      nextFiles.splice(toIndex, 0, movedFile);
+      onChange(nextFiles);
+      return nextFiles;
+    });
+  };
+
   return (
     <div className="w-full">
       <div
@@ -84,7 +97,18 @@ export default function ImageUploader({
         {previews.map((item, index) => (
           <div
             key={index}
-            className="relative group aspect-square rounded overflow-hidden border"
+            draggable
+            onDragStart={() => setDraggedIndex(index)}
+            onDragOver={(event) => event.preventDefault()}
+            onDrop={() => {
+              if (draggedIndex === null) return;
+              moveFile(draggedIndex, index);
+              setDraggedIndex(null);
+            }}
+            onDragEnd={() => setDraggedIndex(null)}
+            className={`relative group aspect-square rounded overflow-hidden border cursor-move ${
+              draggedIndex === index ? "opacity-60 ring-2 ring-brown/40" : ""
+            }`}
           >
             {item.type.startsWith("image") ? (
               <Image
@@ -105,14 +129,22 @@ export default function ImageUploader({
             <button
               type="button"
               onClick={() => removeImage(index)}
-              className="absolute top-1 right-1 bg-black/70 text-white text-xs rounded-full w-6 h-6 
-              flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+              className="absolute top-1 right-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 text-xs text-white opacity-0 transition group-hover:opacity-100"
             >
               ✕
             </button>
+            <div className="absolute left-1 top-1 rounded bg-black/70 px-1.5 py-0.5 text-[10px] text-white">
+              {index + 1}
+            </div>
           </div>
         ))}
       </div>
+      {previews.length > 1 ? (
+        <p className="mt-2 text-xs text-brown/70">
+          Drag thumbnails to set the display order. The first image becomes the
+          cover image.
+        </p>
+      ) : null}
     </div>
   );
 }

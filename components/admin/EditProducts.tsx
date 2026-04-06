@@ -24,6 +24,15 @@ const selectableCategories = categoryOptions.filter(
   (category) => category.slug !== "all",
 );
 
+const reorderItems = <T,>(items: T[], fromIndex: number, toIndex: number) => {
+  if (fromIndex === toIndex) return items;
+
+  const nextItems = [...items];
+  const [movedItem] = nextItems.splice(fromIndex, 1);
+  nextItems.splice(toIndex, 0, movedItem);
+  return nextItems;
+};
+
 const EditProducts = ({
   product,
   onClose,
@@ -42,6 +51,10 @@ const EditProducts = ({
   );
   const [price, setPrice] = useState(product.price);
   const [loading, setLoading] = useState(false);
+  const [uploaderResetToken, setUploaderResetToken] = useState(0);
+  const [draggedExistingImageIndex, setDraggedExistingImageIndex] = useState<
+    number | null
+  >(null);
 
   const [existingImages, setExistingImages] = useState<string[]>(
     product.images,
@@ -108,6 +121,7 @@ const EditProducts = ({
       });
 
       toast.success("Product updated successfully");
+      setUploaderResetToken((currentToken) => currentToken + 1);
       onSuccess();
       onClose();
     } catch (err) {
@@ -119,44 +133,31 @@ const EditProducts = ({
   };
   return (
     <form onSubmit={handleUpdate} className="space-y-3">
-      <ImageUploader onChange={handleFiles} maxFiles={5} />
-
-      <div className="flex gap-2 flex-wrap">
-        {newImages.map((file, i) => {
-          const preview = URL.createObjectURL(file);
-
-          return (
-            <Image
-              key={i}
-              src={preview}
-              alt={`New image preview ${i + 1}`}
-              onLoad={() => URL.revokeObjectURL(preview)}
-              width={80}
-              height={80}
-              unoptimized
-              className="w-20 h-20 object-cover rounded border"
-            />
-          );
-        })}
-
-        {newVideos.map((file, i) => {
-          const preview = URL.createObjectURL(file);
-
-          return (
-            <video
-              key={i}
-              src={preview}
-              controls
-              onLoadedData={() => URL.revokeObjectURL(preview)}
-              className="w-20 h-20 object-cover rounded border"
-            />
-          );
-        })}
-      </div>
+      <ImageUploader
+        key={uploaderResetToken}
+        onChange={handleFiles}
+        maxFiles={5}
+      />
 
       <div className="flex gap-2 flex-wrap">
         {existingImages.map((img, i) => (
-          <div key={i} className="group relative">
+          <div
+            key={img}
+            draggable
+            onDragStart={() => setDraggedExistingImageIndex(i)}
+            onDragOver={(event) => event.preventDefault()}
+            onDrop={() => {
+              if (draggedExistingImageIndex === null) return;
+              setExistingImages((currentImages) =>
+                reorderItems(currentImages, draggedExistingImageIndex, i),
+              );
+              setDraggedExistingImageIndex(null);
+            }}
+            onDragEnd={() => setDraggedExistingImageIndex(null)}
+            className={`group relative cursor-move ${
+              draggedExistingImageIndex === i ? "opacity-60" : ""
+            }`}
+          >
             <Image
               src={img}
               alt={`Existing image ${i + 1}`}
@@ -176,6 +177,9 @@ const EditProducts = ({
             >
               ✕
             </Button>
+            <div className="absolute left-1 top-1 rounded bg-black/70 px-1.5 py-0.5 text-[10px] text-white">
+              {i + 1}
+            </div>
           </div>
         ))}
 
@@ -205,6 +209,12 @@ const EditProducts = ({
             </div>
           ))}
       </div>
+
+      {existingImages.length > 1 ? (
+        <p className="text-xs text-brown/70">
+          Drag existing thumbnails to change their display order.
+        </p>
+      ) : null}
 
       <label>Primary Category:</label>
       <select

@@ -13,6 +13,7 @@ const selectableCategories = categoryOptions.filter(
 const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
   const [images, setImages] = useState<File[]>([]);
   const [videos, setVideos] = useState<File[]>([]);
+  const [uploaderResetToken, setUploaderResetToken] = useState(0);
   const [primaryCategory, setPrimaryCategory] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [title, setTitle] = useState("");
@@ -65,6 +66,7 @@ const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
       // reset
       setImages([]);
       setVideos([]);
+      setUploaderResetToken((currentToken) => currentToken + 1);
       setPrimaryCategory("");
       setSelectedCategories([]);
       setTitle("");
@@ -80,7 +82,11 @@ const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
   return (
     <div className="flex flex-col items-center gap-6 w-full">
       <form onSubmit={handleSubmit} className="w-full space-y-4">
-        <ImageUploader onChange={handleFilesChange} maxFiles={5} />
+        <ImageUploader
+          key={uploaderResetToken}
+          onChange={handleFilesChange}
+          maxFiles={5}
+        />
 
         <label>
           Primary Category:
