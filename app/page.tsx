@@ -3,10 +3,14 @@ import FeaturesStrip from "@/components/FeaturesStrip";
 import Hero from "@/components/Hero";
 import ProductSections from "@/components/ProductSections";
 import Shop from "@/components/Shop";
+import { fetchStoreCategories } from "@/lib/categories";
 import { fetchProducts } from "@/lib/product";
 
 export default async function Home() {
-  const products = await fetchProducts();
+  const [products, categories] = await Promise.all([
+    fetchProducts(),
+    fetchStoreCategories(),
+  ]);
 
   return (
     <>
@@ -15,7 +19,7 @@ export default async function Home() {
       </div>
       <div className="mt-10 px-5 lg:max-w-7xl lg:mx-auto overflow-x-hidden bg-background">
         <div>
-          <Shop />
+          <Shop categories={categories} />
         </div>
         <CustomJewelryStrip />
         {products.length > 0 ? <ProductSections products={products} /> : null}

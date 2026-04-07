@@ -84,8 +84,12 @@ const Sidebar = ({ setFilter, filter }: Props) => {
                 label: "All Products",
                 isActive: filter === "All Products",
               })}
+              {renderNavButton({
+                label: "Category Thumbnails",
+                isActive: filter === "Category Thumbnails",
+              })}
 
-              {categories.map((cat) => (
+              {categories.filter((cat) => cat.slug !== "all").map((cat) => (
                 <div key={cat.title}>
                   {renderNavButton({
                     label: cat.title,
@@ -130,7 +134,11 @@ const Sidebar = ({ setFilter, filter }: Props) => {
             label: "All Products",
             isActive: filter === "All Products",
           })}
-          {categories.map((cat) => (
+          {renderNavButton({
+            label: "Category Thumbnails",
+            isActive: filter === "Category Thumbnails",
+          })}
+          {categories.filter((cat) => cat.slug !== "all").map((cat) => (
             <div key={cat.title}>
               {renderNavButton({
                 label: cat.title,

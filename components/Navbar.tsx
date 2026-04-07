@@ -1,4 +1,5 @@
 "use client";
+import { StoreCategory, fetchStoreCategories } from "@/lib/categories";
 import { navbar } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +15,18 @@ const Navbar = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [showSearch, setShowSearch] = useState(false);
+  const [shopCategories, setShopCategories] = useState<StoreCategory[]>(
+    (navbar.find((item) => item.title === "Shop")?.children || []).map(
+      (category, index) => ({
+        id: category.slug,
+        title: category.title,
+        slug: category.slug,
+        thumbnail_image: category.image,
+        sort_order: index,
+        is_active: true,
+      }),
+    ),
+  );
 
   const pathName = usePathname();
   const { cartCount } = useCart();
@@ -48,6 +61,24 @@ const Navbar = () => {
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
   }, [showSearch]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadCategories = async () => {
+      const categories = await fetchStoreCategories();
+
+      if (!isMounted) return;
+
+      setShopCategories(categories.filter((category) => category.slug !== "all"));
+    };
+
+    loadCategories();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <header
@@ -94,7 +125,7 @@ const Navbar = () => {
                 </Link>
                 {item.children && openIndex === index && (
                   <div className="dropdown-menu">
-                    {item.children.map((c) => (
+                    {shopCategories.map((c) => (
                       <Link
                         className="flex items-center gap-4 hover:translate-y-1 transition-all duration-300"
                         key={c.title}
@@ -102,7 +133,7 @@ const Navbar = () => {
                       >
                         <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#f8f5f2] flex items-center justify-center">
                           <Image
-                            src={c.image}
+                            src={c.thumbnail_image}
                             alt={c.title}
                             width={100}
                             height={100}

@@ -1,10 +1,10 @@
 "use client";
-import { categories } from "@/lib/constants";
+import { StoreCategory } from "@/lib/categories";
 import { useRevealOnScroll } from "@/lib/scrollAnimation";
 import Image from "next/image";
 import Link from "next/link";
 
-const Shop = () => {
+const Shop = ({ categories }: { categories: StoreCategory[] }) => {
   useRevealOnScroll();
   return (
     <section id="shop" className="text-brown flex flex-col gap-5">
@@ -22,7 +22,7 @@ const Shop = () => {
           >
             <div className="w-20 h-20 xl:w-28 xl:h-28 rounded-full overflow-hidden bg-[#f8f5f2] flex items-center justify-center">
               <Image
-                src={category.image}
+                src={category.thumbnail_image}
                 alt={category.title}
                 width={112}
                 height={112}

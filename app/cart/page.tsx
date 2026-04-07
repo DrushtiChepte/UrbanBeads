@@ -3,14 +3,17 @@
 import { useCart } from "@/context/CartContext";
 import {
   buildInstagramOrderMessage,
+  FREE_SHIPPING_THRESHOLD,
+  getShippingFee,
   INSTAGRAM_PROFILE_URL,
-  SHIPPING_FEE,
 } from "@/lib/instagram";
 import Image from "next/image";
 import { toast } from "sonner";
 
 export default function CartPage() {
   const { items, subtotal, removeItem, updateQuantity, clearCart } = useCart();
+  const shippingFee = items.length > 0 ? getShippingFee(subtotal) : 0;
+  const total = subtotal + shippingFee;
 
   const checkoutMessage = buildInstagramOrderMessage(
     items.map((item) => ({
@@ -112,12 +115,16 @@ export default function CartPage() {
 
               <div className="flex justify-between text-sm text-[#7A6755] mb-4">
                 <span>Shipping</span>
-                <span>Rs. {SHIPPING_FEE}</span>
+                <span>
+                  {shippingFee === 0
+                    ? `Free above Rs. ${FREE_SHIPPING_THRESHOLD}`
+                    : `Rs. ${shippingFee}`}
+                </span>
               </div>
 
               <div className="flex justify-between font-semibold text-lg mb-6">
                 <span>Total</span>
-                <span>Rs. {subtotal + SHIPPING_FEE}</span>
+                <span>Rs. {total}</span>
               </div>
 
               <button

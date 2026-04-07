@@ -6,7 +6,11 @@ type InstagramOrderItem = {
 
 const INSTAGRAM_HANDLE = "__urbanbeads";
 export const SHIPPING_FEE = 99;
+export const FREE_SHIPPING_THRESHOLD = 999;
 export const INSTAGRAM_PROFILE_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
+
+export const getShippingFee = (subtotal: number) =>
+  subtotal > FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
 
 export function buildInstagramOrderMessage(items: InstagramOrderItem[]) {
   const normalizedItems = items.filter((item) => item.quantity > 0);
@@ -14,7 +18,7 @@ export function buildInstagramOrderMessage(items: InstagramOrderItem[]) {
     (total, item) => total + item.price * item.quantity,
     0,
   );
-  const shipping = normalizedItems.length > 0 ? SHIPPING_FEE : 0;
+  const shipping = normalizedItems.length > 0 ? getShippingFee(subtotal) : 0;
   const total = subtotal + shipping;
 
   const orderSummary = normalizedItems
@@ -31,7 +35,9 @@ export function buildInstagramOrderMessage(items: InstagramOrderItem[]) {
     orderSummary || "- No items selected yet",
     "",
     `Subtotal: Rs. ${subtotal}`,
-    `Shipping: Rs. ${shipping}`,
+    shipping === 0
+      ? `Shipping: Free (above Rs. ${FREE_SHIPPING_THRESHOLD})`
+      : `Shipping: Rs. ${shipping}`,
     `Total: Rs. ${total}`,
   ].join("\n");
 

@@ -1,9 +1,11 @@
 "use client";
 
 import AddProducts from "@/components/admin/AddProducts";
+import CategoryThumbnailManager from "@/components/admin/CategoryThumbnailManager";
 import EditProducts from "@/components/admin/EditProducts";
 import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
+import { StoreCategory, fetchStoreCategories } from "@/lib/categories";
 import { Product, deleteProduct, fetchProducts } from "@/lib/product";
 
 import Image from "next/image";
@@ -18,6 +20,7 @@ import { categories as categoryOptions } from "@/lib/constants";
 export default function AdminPage() {
   const [productsLoading, setProductsLoading] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
+  const [storeCategories, setStoreCategories] = useState<StoreCategory[]>([]);
   const [activeImage, setActiveImage] = useState<Record<string, number>>({});
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
@@ -34,8 +37,12 @@ export default function AdminPage() {
 
   const getProducts = async () => {
     setProductsLoading(true);
-    const fetchedProducts = await fetchProducts();
+    const [fetchedProducts, fetchedCategories] = await Promise.all([
+      fetchProducts(),
+      fetchStoreCategories(true),
+    ]);
     setProducts(fetchedProducts);
+    setStoreCategories(fetchedCategories);
     setProductsLoading(false);
   };
 
@@ -45,11 +52,15 @@ export default function AdminPage() {
     let isMounted = true;
 
     const loadProducts = async () => {
-      const fetchedProducts = await fetchProducts();
+      const [fetchedProducts, fetchedCategories] = await Promise.all([
+        fetchProducts(),
+        fetchStoreCategories(true),
+      ]);
 
       if (!isMounted) return;
 
       setProducts(fetchedProducts);
+      setStoreCategories(fetchedCategories);
       setProductsLoading(false);
     };
 
@@ -72,7 +83,7 @@ export default function AdminPage() {
   }
 
   const filteredProducts =
-    filter === "All Products"
+    filter === "All Products" || filter === "Category Thumbnails"
       ? products
       : products.filter((product) =>
           product.categories.includes(
@@ -103,7 +114,15 @@ export default function AdminPage() {
       <p className="heading text-center">Admin Dashboard</p>
 
       <div className="px-4 mt-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {filter === "Category Thumbnails" ? (
+          <CategoryThumbnailManager
+            categories={storeCategories.filter(
+              (category) => category.slug !== "all",
+            )}
+            onSuccess={getProducts}
+          />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {/* Add Product Card */}
           <div className="border flex items-center justify-center p-2">
             <AddProducts onSuccess={getProducts} />
@@ -227,7 +246,8 @@ export default function AdminPage() {
               </div>
             );
           })}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );
