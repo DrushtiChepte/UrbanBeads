@@ -132,7 +132,14 @@ const EditProducts = ({
     }
   };
   return (
-    <form onSubmit={handleUpdate} className="space-y-3">
+    <form onSubmit={handleUpdate} className="space-y-5">
+      <div>
+        <h2 className="text-xl font-semibold text-brown">Edit Product</h2>
+        <p className="mt-1 text-sm text-brown/70">
+          Update media, category placement, title, and price.
+        </p>
+      </div>
+
       <ImageUploader
         key={uploaderResetToken}
         onChange={handleFiles}
@@ -216,93 +223,100 @@ const EditProducts = ({
         </p>
       ) : null}
 
-      <label>Primary Category:</label>
-      <select
-        value={primaryCategory}
-        onChange={(e) => {
-          const nextPrimaryCategory = e.target.value;
-          setPrimaryCategory(nextPrimaryCategory);
-          setSelectedCategories((currentCategories) =>
-            currentCategories.includes(nextPrimaryCategory)
-              ? currentCategories
-              : [...currentCategories, nextPrimaryCategory],
-          );
-        }}
-        className="border p-2 w-full rounded"
-      >
-        {selectableCategories.map((category) => (
-          <option key={category.slug} value={category.slug}>
-            {category.title}
-          </option>
-        ))}
-      </select>
+      <div className="grid gap-4 md:grid-cols-2">
+        <label className="space-y-2">
+          <span className="text-sm font-medium text-brown">
+            Primary Category
+          </span>
+          <select
+            value={primaryCategory}
+            onChange={(e) => {
+              const nextPrimaryCategory = e.target.value;
+              setPrimaryCategory(nextPrimaryCategory);
+              setSelectedCategories((currentCategories) =>
+                currentCategories.includes(nextPrimaryCategory)
+                  ? currentCategories
+                  : [...currentCategories, nextPrimaryCategory],
+              );
+            }}
+            className="border p-2 w-full rounded"
+          >
+            {selectableCategories.map((category) => (
+              <option key={category.slug} value={category.slug}>
+                {category.title}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      <div className="space-y-2">
-        <label>Show In Categories:</label>
-        <div className="grid grid-cols-2 gap-2 rounded border p-3">
-          {selectableCategories.map((category) => (
-            <label
-              key={category.slug}
-              className="flex items-center gap-2 text-sm"
-            >
-              <input
-                type="checkbox"
-                checked={
-                  selectedCategories.includes(category.slug) ||
-                  primaryCategory === category.slug
-                }
-                onChange={(event) => {
-                  if (event.target.checked) {
+        <div className="space-y-2">
+          <span className="text-sm font-medium text-brown">
+            Show In Categories
+          </span>
+          <div className="grid grid-cols-2 gap-2 rounded border p-3">
+            {selectableCategories.map((category) => (
+              <label
+                key={category.slug}
+                className="flex items-center gap-2 text-sm"
+              >
+                <input
+                  type="checkbox"
+                  checked={
+                    selectedCategories.includes(category.slug) ||
+                    primaryCategory === category.slug
+                  }
+                  onChange={(event) => {
+                    if (event.target.checked) {
+                      setSelectedCategories((currentCategories) =>
+                        currentCategories.includes(category.slug)
+                          ? currentCategories
+                          : [...currentCategories, category.slug],
+                      );
+                      return;
+                    }
+
+                    if (primaryCategory === category.slug) {
+                      return;
+                    }
+
                     setSelectedCategories((currentCategories) =>
-                      currentCategories.includes(category.slug)
-                        ? currentCategories
-                        : [...currentCategories, category.slug],
+                      currentCategories.filter(
+                        (selectedCategory) =>
+                          selectedCategory !== category.slug,
+                      ),
                     );
-                    return;
-                  }
-
-                  if (primaryCategory === category.slug) {
-                    return;
-                  }
-
-                  setSelectedCategories((currentCategories) =>
-                    currentCategories.filter(
-                      (selectedCategory) =>
-                        selectedCategory !== category.slug,
-                    ),
-                  );
-                }}
-              />
-              <span>{category.title}</span>
-            </label>
-          ))}
+                  }}
+                />
+                <span>{category.title}</span>
+              </label>
+            ))}
+          </div>
         </div>
       </div>
 
-      <label>Title:</label>
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="border p-2 w-full rounded"
-      />
+      <div className="grid gap-4 md:grid-cols-2">
+        <label className="space-y-2">
+          <span className="text-sm font-medium text-brown">Title</span>
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border p-2 w-full rounded"
+          />
+        </label>
 
-      <label>Price:</label>
-      <input
-        type="number"
-        min={0}
-        value={price}
-        onChange={(e) => setPrice(Number(e.target.value))}
-        className="border p-2 w-full rounded"
-      />
+        <label className="space-y-2">
+          <span className="text-sm font-medium text-brown">Price</span>
+          <input
+            type="number"
+            min={0}
+            value={price}
+            onChange={(e) => setPrice(Number(e.target.value))}
+            className="border p-2 w-full rounded"
+          />
+        </label>
+      </div>
 
-      <div className="flex flex-col w-full gap-2">
-        <Button
-          disabled={loading}
-          className="bg-brown rounded-sm cursor-pointer"
-        >
-          {loading ? "Updating..." : "Update"}
-        </Button>
-
+      <div className="flex flex-col-reverse gap-2 pt-2 md:flex-row md:justify-end">
         <Button
           type="button"
           variant="outline"
@@ -310,6 +324,13 @@ const EditProducts = ({
           className="cursor-pointer"
         >
           Cancel
+        </Button>
+
+        <Button
+          disabled={loading}
+          className="bg-brown rounded-sm cursor-pointer"
+        >
+          {loading ? "Updating..." : "Update"}
         </Button>
       </div>
     </form>

@@ -16,13 +16,11 @@ export default function ImageUploader({
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      setFiles((prevFiles) => {
-        const combinedFiles = [...prevFiles, ...acceptedFiles].slice(0, maxFiles);
-        onChange(combinedFiles);
-        return combinedFiles;
-      });
+      const combinedFiles = [...files, ...acceptedFiles].slice(0, maxFiles);
+      setFiles(combinedFiles);
+      onChange(combinedFiles);
     },
-    [maxFiles, onChange],
+    [files, maxFiles, onChange],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -50,23 +48,19 @@ export default function ImageUploader({
   }, [previews]);
 
   const removeImage = (index: number) => {
-    setFiles((prevFiles) => {
-      const nextFiles = prevFiles.filter((_, itemIndex) => itemIndex !== index);
-      onChange(nextFiles);
-      return nextFiles;
-    });
+    const nextFiles = files.filter((_, itemIndex) => itemIndex !== index);
+    setFiles(nextFiles);
+    onChange(nextFiles);
   };
 
   const moveFile = (fromIndex: number, toIndex: number) => {
     if (fromIndex === toIndex) return;
 
-    setFiles((prevFiles) => {
-      const nextFiles = [...prevFiles];
-      const [movedFile] = nextFiles.splice(fromIndex, 1);
-      nextFiles.splice(toIndex, 0, movedFile);
-      onChange(nextFiles);
-      return nextFiles;
-    });
+    const nextFiles = [...files];
+    const [movedFile] = nextFiles.splice(fromIndex, 1);
+    nextFiles.splice(toIndex, 0, movedFile);
+    setFiles(nextFiles);
+    onChange(nextFiles);
   };
 
   return (

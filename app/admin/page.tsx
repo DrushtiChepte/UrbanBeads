@@ -87,8 +87,8 @@ export default function AdminPage() {
       ? products
       : products.filter((product) =>
           product.categories.includes(
-            categoryOptions.find((category) => category.title === filter)?.slug ||
-              filter.toLowerCase(),
+            categoryOptions.find((category) => category.title === filter)
+              ?.slug || filter.toLowerCase(),
           ),
         );
 
@@ -123,129 +123,140 @@ export default function AdminPage() {
           />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {/* Add Product Card */}
-          <div className="border flex items-center justify-center p-2">
-            <AddProducts onSuccess={getProducts} />
-          </div>
+            {/* Add Product Card */}
+            <div className="border flex items-center justify-center p-2">
+              <AddProducts onSuccess={getProducts} />
+            </div>
 
-          {filteredProducts.map((product) => {
-            const images = Array.isArray(product.images) ? product.images : [];
+            {filteredProducts.map((product) => {
+              const images = Array.isArray(product.images)
+                ? product.images
+                : [];
 
-            const videos = Array.isArray(product.videos) ? product.videos : [];
+              const videos = Array.isArray(product.videos)
+                ? product.videos
+                : [];
 
-            const mixedMedia = [
-              ...images.map((url) => ({ type: "image" as const, url })),
-              ...videos.map((url) => ({ type: "video" as const, url })),
-            ];
+              const mixedMedia = [
+                ...images.map((url) => ({ type: "image" as const, url })),
+                ...videos.map((url) => ({ type: "video" as const, url })),
+              ];
 
-            const activeIndex = activeImage[product.id] ?? 0;
-            const currentMedia = mixedMedia[activeIndex];
+              const activeIndex = activeImage[product.id] ?? 0;
+              const currentMedia = mixedMedia[activeIndex];
 
-            return (
-              <div
-                key={product.id}
-                className="group relative bg-white overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
-              >
-                {/* Edit Modal */}
-                {editingProduct?.id === product.id && (
-                  <div className="absolute inset-0 bg-white/90 flex items-center justify-center z-50">
-                    <EditProducts
-                      product={editingProduct}
-                      onClose={() => setEditingProduct(null)}
-                      onSuccess={getProducts}
-                    />
+              return (
+                <div
+                  key={product.id}
+                  className="group relative flex h-full flex-col bg-white shadow-md hover:shadow-xl transition-all duration-300"
+                >
+                  {/* Edit Modal */}
+                  {editingProduct?.id === product.id && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+                      <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+                        <EditProducts
+                          product={editingProduct}
+                          onClose={() => setEditingProduct(null)}
+                          onSuccess={getProducts}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Main Media */}
+                  <div className="relative aspect-4/5 bg-black overflow-hidden">
+                    {currentMedia?.type === "image" ? (
+                      <Image
+                        src={currentMedia.url}
+                        alt={product.slug}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : currentMedia?.type === "video" ? (
+                      <video
+                        src={currentMedia.url}
+                        autoPlay
+                        muted
+                        className="w-full h-full object-cover"
+                      />
+                    ) : null}
                   </div>
-                )}
 
-                {/* Main Media */}
-                <div className="relative aspect-4/5 bg-black overflow-hidden">
-                  {currentMedia?.type === "image" ? (
-                    <Image
-                      src={currentMedia.url}
-                      alt={product.slug}
-                      fill
-                      className="object-cover"
-                    />
-                  ) : currentMedia?.type === "video" ? (
-                    <video
-                      src={currentMedia.url}
-                      autoPlay
-                      muted
-                      className="w-full h-full object-cover"
-                    />
-                  ) : null}
+                  {/* Thumbnails */}
+                  <div className="flex justify-center gap-2 mt-2">
+                    {mixedMedia.map((item, index) => (
+                      <button
+                        key={index}
+                        onClick={() =>
+                          setActiveImage((currentActiveImage) => ({
+                            ...currentActiveImage,
+                            [product.id]: index,
+                          }))
+                        }
+                        className={`w-12 h-12 rounded-lg overflow-hidden border transition-transform duration-300 hover:scale-110 ${
+                          activeImage[product.id] === index
+                            ? "border-brown"
+                            : "border-gray-300"
+                        }`}
+                      >
+                        {item.type === "image" ? (
+                          <Image
+                            src={item.url}
+                            alt={`${product.title} preview ${index + 1}`}
+                            width={48}
+                            height={48}
+                            className="object-cover w-full h-full"
+                          />
+                        ) : (
+                          <video
+                            src={item.url}
+                            muted
+                            className="w-full h-full object-cover pointer-events-none"
+                          />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex flex-1 flex-col gap-2 p-4">
+                    <p className="text-brown/50">
+                      Primary: {product.primary_category}
+                    </p>
+                    <p className="text-brown/50 text-sm">
+                      Also in: {product.categories.join(", ")}
+                    </p>
+                    <h2 className="min-h-12 text-md text-brown line-clamp-2">
+                      {product.title}
+                    </h2>
+                    <p className="text-lg font-bold text-brown">
+                      ₹{product.price}
+                    </p>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="mt-auto flex items-center justify-center gap-5 bg-beige/30 p-2">
+                    <Button onClick={() => handleDelete(product.slug)}>
+                      <Image
+                        src="/delete-btn.svg"
+                        alt="Delete"
+                        height={25}
+                        width={25}
+                      />
+                    </Button>
+
+                    <Button onClick={() => setEditingProduct(product)}>
+                      <Image
+                        src="/edit.png"
+                        alt="Edit"
+                        height={22}
+                        width={22}
+                      />
+                    </Button>
+                  </div>
                 </div>
-
-                {/* Thumbnails */}
-                <div className="flex justify-center gap-2 mt-2">
-                  {mixedMedia.map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={() =>
-                        setActiveImage((currentActiveImage) => ({
-                          ...currentActiveImage,
-                          [product.id]: index,
-                        }))
-                      }
-                      className={`w-12 h-12 rounded-lg overflow-hidden border transition-transform duration-300 hover:scale-110 ${
-                        activeImage[product.id] === index
-                          ? "border-brown"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {item.type === "image" ? (
-                        <Image
-                          src={item.url}
-                          alt={`${product.title} preview ${index + 1}`}
-                          width={48}
-                          height={48}
-                          className="object-cover w-full h-full"
-                        />
-                      ) : (
-                        <video
-                          src={item.url}
-                          muted
-                          className="w-full h-full object-cover pointer-events-none"
-                        />
-                      )}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Info */}
-                <div className="p-4 flex flex-col gap-2">
-                  <p className="text-brown/50">
-                    Primary: {product.primary_category}
-                  </p>
-                  <p className="text-brown/50 text-sm">
-                    Also in: {product.categories.join(", ")}
-                  </p>
-                  <h2 className="text-md text-brown line-clamp-2">
-                    {product.title}
-                  </h2>
-                  <p className="text-lg font-bold text-brown">
-                    ₹{product.price}
-                  </p>
-                </div>
-
-                {/* Actions */}
-                <div className="flex justify-center items-center p-2 gap-5 bg-beige/30">
-                  <Button onClick={() => handleDelete(product.slug)}>
-                    <Image
-                      src="/delete-btn.svg"
-                      alt="Delete"
-                      height={25}
-                      width={25}
-                    />
-                  </Button>
-
-                  <Button onClick={() => setEditingProduct(product)}>
-                    <Image src="/edit.png" alt="Edit" height={22} width={22} />
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
           </div>
         )}
       </div>
