@@ -1,5 +1,7 @@
 import ProductCard from "@/components/ProductCard";
+import { fetchStoreCategories } from "@/lib/categories";
 import { fetchProducts } from "@/lib/product";
+import { notFound } from "next/navigation";
 
 interface PageProps {
   params: Promise<{
@@ -10,7 +12,19 @@ interface PageProps {
 export default async function CategoryPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const products = await fetchProducts();
+  const [products, categories] = await Promise.all([
+    fetchProducts(),
+    fetchStoreCategories(),
+  ]);
+
+  if (slug !== "all" && !categories.some((category) => category.slug === slug)) {
+    notFound();
+  }
+
+  const categoryTitle =
+    slug === "all"
+      ? "All Products"
+      : categories.find((category) => category.slug === slug)?.title ?? slug;
 
   const filteredProducts =
     slug === "all"
@@ -20,8 +34,9 @@ export default async function CategoryPage({ params }: PageProps) {
   return (
     <main className="mt-30 px-5 lg:max-w-7xl lg:mx-auto min-h-screen text-brown">
       {/* Heading */}
-      <h1 className="text-3xl font-bold capitalize mb-8">{slug} Collection</h1>
-
+      <h1 className="text-3xl font-bold capitalize mb-8">
+        {categoryTitle} Collection
+      </h1>
       {/* Products Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2">
         {filteredProducts.length === 0 ? (

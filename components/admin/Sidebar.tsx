@@ -1,5 +1,6 @@
 "use client";
 
+import { StoreCategory } from "@/lib/categories";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -17,14 +18,14 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "../ui/button";
 import Hamburger from "hamburger-react";
-import { categories } from "@/lib/constants";
 
 type Props = {
   setFilter: (val: string) => void;
   filter: string;
+  categories: StoreCategory[];
 };
 
-const Sidebar = ({ setFilter, filter }: Props) => {
+const Sidebar = ({ setFilter, filter, categories }: Props) => {
   const { signOut } = useAuth();
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
@@ -88,6 +89,10 @@ const Sidebar = ({ setFilter, filter }: Props) => {
                 label: "Category Thumbnails",
                 isActive: filter === "Category Thumbnails",
               })}
+              {renderNavButton({
+                label: "Manage Categories",
+                isActive: filter === "Manage Categories",
+              })}
 
               {categories.filter((cat) => cat.slug !== "all").map((cat) => (
                 <div key={cat.title}>
@@ -137,6 +142,10 @@ const Sidebar = ({ setFilter, filter }: Props) => {
           {renderNavButton({
             label: "Category Thumbnails",
             isActive: filter === "Category Thumbnails",
+          })}
+          {renderNavButton({
+            label: "Manage Categories",
+            isActive: filter === "Manage Categories",
           })}
           {categories.filter((cat) => cat.slug !== "all").map((cat) => (
             <div key={cat.title}>

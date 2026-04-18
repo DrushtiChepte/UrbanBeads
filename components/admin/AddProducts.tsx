@@ -4,13 +4,18 @@ import ImageUploader from "./ImageUploader";
 import { Button } from "../ui/button";
 import { addProduct } from "@/lib/product";
 import { toast } from "sonner";
-import { categories as categoryOptions } from "@/lib/constants";
+import { StoreCategory } from "@/lib/categories";
 
-const selectableCategories = categoryOptions.filter(
-  (category) => category.slug !== "all",
-);
-
-const AddProducts = ({ onSuccess }: { onSuccess: () => void }) => {
+const AddProducts = ({
+  onSuccess,
+  categories,
+}: {
+  onSuccess: () => void;
+  categories: StoreCategory[];
+}) => {
+  const selectableCategories = categories.filter(
+    (category) => category.slug !== "all" && category.is_active,
+  );
   const [images, setImages] = useState<File[]>([]);
   const [videos, setVideos] = useState<File[]>([]);
   const [uploaderResetToken, setUploaderResetToken] = useState(0);

@@ -7,7 +7,7 @@ import ImageUploader from "./ImageUploader";
 import { editProduct } from "@/lib/product";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { categories as categoryOptions } from "@/lib/constants";
+import { StoreCategory } from "@/lib/categories";
 
 type Product = {
   id?: string;
@@ -19,10 +19,6 @@ type Product = {
   videos: string[] | string;
   slug: string;
 };
-
-const selectableCategories = categoryOptions.filter(
-  (category) => category.slug !== "all",
-);
 
 const reorderItems = <T,>(items: T[], fromIndex: number, toIndex: number) => {
   if (fromIndex === toIndex) return items;
@@ -41,7 +37,13 @@ const EditProducts = ({
   product: Product;
   onClose: () => void;
   onSuccess: () => void;
+  categories: StoreCategory[];
 }) => {
+  const selectableCategories = categories.filter(
+    (category) =>
+      category.slug !== "all" &&
+      (category.is_active || product.categories.includes(category.slug)),
+  );
   const [title, setTitle] = useState(product.title);
   const [primaryCategory, setPrimaryCategory] = useState(product.primary_category);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(

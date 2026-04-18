@@ -1,6 +1,7 @@
 "use client";
 
 import AddProducts from "@/components/admin/AddProducts";
+import CategoryManager from "@/components/admin/CategoryManager";
 import CategoryThumbnailManager from "@/components/admin/CategoryThumbnailManager";
 import EditProducts from "@/components/admin/EditProducts";
 import Loader from "@/components/Loader";
@@ -15,7 +16,6 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Sidebar from "@/components/admin/Sidebar";
-import { categories as categoryOptions } from "@/lib/constants";
 
 export default function AdminPage() {
   const [productsLoading, setProductsLoading] = useState(true);
@@ -83,12 +83,14 @@ export default function AdminPage() {
   }
 
   const filteredProducts =
-    filter === "All Products" || filter === "Category Thumbnails"
+    filter === "All Products" ||
+    filter === "Category Thumbnails" ||
+    filter === "Manage Categories"
       ? products
       : products.filter((product) =>
           product.categories.includes(
-            categoryOptions.find((category) => category.title === filter)
-              ?.slug || filter.toLowerCase(),
+            storeCategories.find((category) => category.title === filter)?.slug ||
+              filter.toLowerCase(),
           ),
         );
 
@@ -110,7 +112,11 @@ export default function AdminPage() {
 
   return (
     <section className="h-screen max-w-7xl mx-auto py-10 overflow-x-hidden scrollbar-hide">
-      <Sidebar setFilter={setFilter} filter={filter} />
+      <Sidebar
+        setFilter={setFilter}
+        filter={filter}
+        categories={storeCategories.filter((category) => category.is_active)}
+      />
       <p className="heading text-center">Admin Dashboard</p>
 
       <div className="px-4 mt-6">
@@ -121,11 +127,16 @@ export default function AdminPage() {
             )}
             onSuccess={getProducts}
           />
+        ) : filter === "Manage Categories" ? (
+          <CategoryManager categories={storeCategories} onSuccess={getProducts} />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {/* Add Product Card */}
             <div className="border flex items-center justify-center p-2">
-              <AddProducts onSuccess={getProducts} />
+              <AddProducts
+                onSuccess={getProducts}
+                categories={storeCategories}
+              />
             </div>
 
             {filteredProducts.map((product) => {
@@ -158,6 +169,7 @@ export default function AdminPage() {
                           product={editingProduct}
                           onClose={() => setEditingProduct(null)}
                           onSuccess={getProducts}
+                          categories={storeCategories}
                         />
                       </div>
                     </div>
