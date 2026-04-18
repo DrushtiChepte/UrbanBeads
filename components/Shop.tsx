@@ -1,7 +1,7 @@
 "use client";
 import { StoreCategory } from "@/lib/categories";
 import { useRevealOnScroll } from "@/lib/scrollAnimation";
-import Image from "next/image";
+import CategoryThumbnailImage from "./CategoryThumbnailImage";
 import Link from "next/link";
 
 const Shop = ({ categories }: { categories: StoreCategory[] }) => {
@@ -21,9 +21,11 @@ const Shop = ({ categories }: { categories: StoreCategory[] }) => {
             className="flex flex-col items-center cursor-pointer hover:scale-105 transition duration-300 fade-up"
           >
             <div className="w-20 h-20 xl:w-28 xl:h-28 rounded-full overflow-hidden bg-[#f8f5f2] flex items-center justify-center">
-              <Image
+              <CategoryThumbnailImage
+                key={category.thumbnail_image}
                 src={category.thumbnail_image}
                 alt={category.title}
+                slug={category.slug}
                 width={112}
                 height={112}
                 className="w-full h-full object-cover"

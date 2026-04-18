@@ -1,6 +1,7 @@
 "use client";
 import { StoreCategory, fetchStoreCategories } from "@/lib/categories";
 import { navbar } from "@/lib/constants";
+import CategoryThumbnailImage from "./CategoryThumbnailImage";
 import Image from "next/image";
 import Link from "next/link";
 import { Twirl as Hamburger } from "hamburger-react";
@@ -132,9 +133,11 @@ const Navbar = () => {
                         href={`/categories/${c.slug}`}
                       >
                         <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#f8f5f2] flex items-center justify-center">
-                          <Image
+                          <CategoryThumbnailImage
+                            key={c.thumbnail_image}
                             src={c.thumbnail_image}
                             alt={c.title}
+                            slug={c.slug}
                             width={100}
                             height={100}
                             className="w-full h-full object-cover"

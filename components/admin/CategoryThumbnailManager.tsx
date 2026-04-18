@@ -1,7 +1,7 @@
 "use client";
 
 import { StoreCategory, updateCategoryThumbnail } from "@/lib/categories";
-import Image from "next/image";
+import CategoryThumbnailImage from "../CategoryThumbnailImage";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
@@ -20,6 +20,18 @@ export default function CategoryThumbnailManager({
     file: File | null,
   ) => {
     if (!file) return;
+
+    const isSupportedType = [
+      "image/png",
+      "image/jpeg",
+      "image/jpg",
+      "image/webp",
+    ].includes(file.type);
+
+    if (!isSupportedType) {
+      toast.error("Please upload a PNG, JPG, or WEBP image.");
+      return;
+    }
 
     try {
       setUploadingSlug(category.slug);
@@ -64,9 +76,11 @@ export default function CategoryThumbnailManager({
             className="rounded-xl border border-brown/10 p-4"
           >
             <div className="relative aspect-square overflow-hidden rounded-xl bg-[#f8f5f2]">
-              <Image
+              <CategoryThumbnailImage
+                key={category.thumbnail_image}
                 src={category.thumbnail_image}
                 alt={category.title}
+                slug={category.slug}
                 fill
                 className="object-cover"
               />
@@ -80,7 +94,7 @@ export default function CategoryThumbnailManager({
             <label className="mt-3 block">
               <input
                 type="file"
-                accept="image/*"
+                accept="image/png,image/jpeg,image/jpg,image/webp"
                 className="hidden"
                 onChange={(event) =>
                   handleThumbnailChange(

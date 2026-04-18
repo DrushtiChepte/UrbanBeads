@@ -22,7 +22,7 @@ export const navbar = [
         slug: "anklets",
       },
       {
-        image: "/images/phone-charm.webp",
+        image: "/images/phone-charm.png",
         title: "Phone Charms",
         slug: "phone-charms",
       },
@@ -32,7 +32,7 @@ export const navbar = [
         slug: "bag-charms",
       },
       {
-        image: "/images/keychain.webp",
+        image: "/images/keychain.jpg",
         title: "Keychains",
         slug: "keychains",
       },

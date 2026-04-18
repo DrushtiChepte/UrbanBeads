@@ -22,6 +22,10 @@ const fallbackStoreCategories: StoreCategory[] = fallbackCategories.map(
   }),
 );
 
+const fallbackCategoryImageBySlug = new Map(
+  fallbackStoreCategories.map((category) => [category.slug, category.thumbnail_image]),
+);
+
 const normalizeCategory = (
   category: Partial<StoreCategory> & Record<string, unknown>,
 ): StoreCategory => ({
@@ -63,6 +67,9 @@ export const fetchStoreCategories = async (includeInactive = false) => {
 
   return data.map((category) => normalizeCategory(category));
 };
+
+export const getCategoryFallbackImage = (slug: string) =>
+  fallbackCategoryImageBySlug.get(slug) ?? "/images/placeholder.png";
 
 export const updateCategoryThumbnail = async ({
   categoryId,
