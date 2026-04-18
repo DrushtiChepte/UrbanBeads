@@ -4,7 +4,7 @@ const ReturnPolicy = () => {
       <span className="mb-4 block font-semibold">Last updated: 2026</span>
 
       <p className="mb-4">
-        At UrbanBeads, we are committed to offering handcrafted jewellery with
+        At Urban Beads, we are committed to offering handcrafted jewellery with
         care and attention to detail. All sales are final, and we do not accept
         returns or exchanges. Please read this policy carefully before placing
         your order.
@@ -35,8 +35,8 @@ const ReturnPolicy = () => {
       <h2 className="mb-1 mt-6 font-semibold">Sizing and Product Questions</h2>
       <p className="mb-4">
         If you have any questions about sizing, styling, colors, materials, or
-        customisation, please contact us before placing your order. We are
-        happy to help you choose the right piece.
+        customisation, please contact us before placing your order. We are happy
+        to help you choose the right piece.
       </p>
 
       <h2 className="mb-1 mt-6 font-semibold">Quality and Condition</h2>

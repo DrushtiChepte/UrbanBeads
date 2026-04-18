@@ -4,7 +4,7 @@ const PrivacyPolicy = () => {
       <span className="mb-4 block font-semibold">Last updated: 2026</span>
 
       <p className="mb-4">
-        UrbanBeads respects your privacy. We only collect the information
+        Urban Beads respects your privacy. We only collect the information
         necessary to communicate with you, confirm your order, and arrange
         delivery when required.
       </p>
@@ -20,9 +20,7 @@ const PrivacyPolicy = () => {
         <li>Any order notes or customization details you share with us</li>
       </ul>
 
-      <h2 className="mb-1 mt-6 font-semibold">
-        How We Use This Information
-      </h2>
+      <h2 className="mb-1 mt-6 font-semibold">How We Use This Information</h2>
       <p className="mb-4">We use your information only to:</p>
       <ul className="mb-4 ml-6 list-disc">
         <li>Confirm and manage your order</li>
@@ -47,7 +45,7 @@ const PrivacyPolicy = () => {
       <h2 className="mb-1 mt-6 font-semibold">Your Choice</h2>
       <p className="mb-10">
         If you would like us to remove old order or contact details you shared
-        with us, please message UrbanBeads on Instagram and we will review your
+        with us, please message Urban Beads on Instagram and we will review your
         request.
       </p>
     </div>

@@ -25,7 +25,7 @@ export default function ProductSections({ products }: ProductSectionsProps) {
       />
       <FeatureSection
         section="Browse the Collection"
-        subTitle="A closer look at versatile pieces across the UrbanBeads range."
+        subTitle="A closer look at versatile pieces across the Urban Beads range."
         items={browseMore.map((product) => ({
           title: product.title,
           image: product.images?.[0] || "/images/placeholder.png",

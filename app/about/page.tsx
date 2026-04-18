@@ -18,7 +18,7 @@ const About = () => {
       <div className="max-w-6xl mx-auto px-6 md:px-12 py-20">
         <div className="text-center max-w-3xl mx-auto mb-5">
           <h2 className="text-3xl md:text-5xl font-semibold tracking-wide mb-4 text-brown">
-            UrbanBeads Story
+            Urban Beads Story
           </h2>
           <p className="text-sm md:text-lg text-brown/90 leading-relaxed">
             Urban Beads was born out of creativity, curiosity, and a shared

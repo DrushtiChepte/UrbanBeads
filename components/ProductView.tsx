@@ -153,7 +153,7 @@ export default function ProductView({ product }: { product: Product }) {
 
           <p className="text-brown/70 leading-7">
             Thoughtfully handmade to bring a soft, elevated finish to your
-            everyday looks. Each UrbanBeads piece is designed for gifting,
+            everyday looks. Each Urban Beads piece is designed for gifting,
             stacking, and wearing on repeat.
           </p>
 
@@ -176,8 +176,8 @@ export default function ProductView({ product }: { product: Product }) {
           </button>
 
           <p className="text-sm text-brown/70 leading-6">
-            Your order message will be copied. Open Instagram DM and paste it
-            to place your order.
+            Your order message will be copied. Open Instagram DM and paste it to
+            place your order.
           </p>
 
           <div>

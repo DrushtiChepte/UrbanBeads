@@ -15,7 +15,7 @@ const Footer = () => {
     >
       <div className=" max-w-7xl mx-auto px-10 md:px-0 py-10 grid grid-cols-1 md:grid-cols-3 gap-10">
         <div className="fade-up">
-          <h2 className="text-xl font-semibold">UrbanBeads</h2>
+          <h2 className="text-xl font-semibold">Urban Beads</h2>
           <p className="text-sm mt-2">
             Handmade jewellery crafted with love and care. Unique, minimal and
             made for everyday elegance.
@@ -54,7 +54,7 @@ const Footer = () => {
       </div>
 
       <div className="border-t py-4 text-center text-xs text-neutral-500">
-        &copy; {new Date().getFullYear()} UrbanBeads. All rights reserved.
+        &copy; {new Date().getFullYear()} Urban Beads. All rights reserved.
         <br />
         Designed with care by Drushti Chepte.
       </div>

@@ -4,7 +4,7 @@ const Shipping = () => {
       <span className="block font-semibold mb-4">Last updated: 2025</span>
 
       <p className="mb-4">
-        At UrbanBeads, every piece is handmade with love. To make your shopping
+        At Urban Beads, every piece is handmade with love. To make your shopping
         experience smooth, here’s our simple shipping policy:
       </p>
 

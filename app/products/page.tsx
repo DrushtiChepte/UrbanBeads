@@ -52,9 +52,7 @@ export default async function ProductsPage({
           product.primary_category,
           product.slug,
           ...product.categories,
-        ].some((value) =>
-          normalizeSearchText(value).includes(normalizedQuery),
-        ),
+        ].some((value) => normalizeSearchText(value).includes(normalizedQuery)),
       )
     : products;
 
@@ -62,10 +60,12 @@ export default async function ProductsPage({
     <section className="min-h-screen px-4 md:px-10 max-w-7xl mx-auto py-10 mt-20">
       <div className="mb-8">
         <p className="text-sm uppercase tracking-[0.3em] text-brown/60">
-          UrbanBeads collection
+          Urban Beads collection
         </p>
         <h1 className="mt-2 text-3xl md:text-4xl font-primary font-semibold text-brown">
-          {query ? `Search results for "${query}"` : "Shop all handcrafted pieces"}
+          {query
+            ? `Search results for "${query}"`
+            : "Shop all handcrafted pieces"}
         </h1>
         {query ? (
           <p className="mt-3 text-sm text-brown/70">

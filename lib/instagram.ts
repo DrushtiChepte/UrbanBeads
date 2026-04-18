@@ -29,7 +29,7 @@ export function buildInstagramOrderMessage(items: InstagramOrderItem[]) {
     .join("\n");
 
   const message = [
-    "Hi UrbanBeads, I would like to place an order.",
+    "Hi Urban Beads, I would like to place an order.",
     "",
     "Items:",
     orderSummary || "- No items selected yet",
