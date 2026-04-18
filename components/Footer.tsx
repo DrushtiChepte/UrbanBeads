@@ -48,7 +48,7 @@ const Footer = () => {
                 @__urbanbeads
               </a>
             </li>
-            <li>Pune, India</li>
+            <li>Pune, Maharashtra</li>
           </ul>
         </div>
       </div>

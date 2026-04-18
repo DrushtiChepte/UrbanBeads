@@ -33,6 +33,7 @@ const EditProducts = ({
   product,
   onClose,
   onSuccess,
+  categories,
 }: {
   product: Product;
   onClose: () => void;
