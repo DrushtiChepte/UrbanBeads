@@ -56,7 +56,7 @@ const Footer = () => {
       <div className="border-t py-4 text-center text-xs text-neutral-500">
         &copy; {new Date().getFullYear()} Urban Beads. All rights reserved.
         <br />
-        Designed with care by Drushti Chepte.
+        Designed & Developed by Drushti Chepte ♥️.
       </div>
     </footer>
   );
