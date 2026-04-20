@@ -55,7 +55,7 @@ export function buildInstagramOrderMessage(items: InstagramOrderItem[]) {
 export function openInstagramDM(items: InstagramOrderItem[]) {
   const message = buildInstagramOrderMessage(items);
 
-  const appUrl = `instagram://direct-inbox`;
+  const appUrl = `instagram://user?username=${INSTAGRAM_HANDLE}`;
   const webUrl = `https://www.instagram.com/direct/new/?username=${INSTAGRAM_HANDLE}`;
 
   // Try opening app
