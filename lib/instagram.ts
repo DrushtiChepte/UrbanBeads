@@ -44,10 +44,29 @@ export function buildInstagramOrderMessage(items: InstagramOrderItem[]) {
   return message;
 }
 
-export function buildInstagramOrderLink(items: InstagramOrderItem[]) {
+// export function buildInstagramOrderLink(items: InstagramOrderItem[]) {
+//   const message = buildInstagramOrderMessage(items);
+
+//   return `https://www.instagram.com/direct/new/?username=${INSTAGRAM_HANDLE}&text=${encodeURIComponent(
+//     message,
+//   )}`;
+// }
+
+export function openInstagramDM(items: InstagramOrderItem[]) {
   const message = buildInstagramOrderMessage(items);
 
-  return `https://www.instagram.com/direct/new/?username=${INSTAGRAM_HANDLE}&text=${encodeURIComponent(
-    message,
-  )}`;
+  const appUrl = `instagram://direct-inbox`;
+  const webUrl = `https://www.instagram.com/direct/new/?username=${INSTAGRAM_HANDLE}`;
+
+  // Try opening app
+  window.location.href = appUrl;
+
+  // Fallback to web
+  setTimeout(() => {
+    window.location.href = webUrl;
+
+    // Copy message so user can paste
+    navigator.clipboard.writeText(message);
+    alert("Message copied! Paste it in Instagram chat");
+  }, 1200);
 }
