@@ -52,21 +52,60 @@ export function buildInstagramOrderMessage(items: InstagramOrderItem[]) {
 //   )}`;
 // }
 
-export function openInstagramDM(items: InstagramOrderItem[]) {
-  const message = buildInstagramOrderMessage(items);
-
+export function openInstagramDM() {
   const appUrl = `instagram://user?username=${INSTAGRAM_HANDLE}`;
   const webUrl = `https://www.instagram.com/direct/new/?username=${INSTAGRAM_HANDLE}`;
 
-  // Try opening app
-  window.location.href = appUrl;
+  const fallbackTimer = window.setTimeout(() => {
+    if (document.visibilityState === "visible") {
+      window.location.href = webUrl;
+    }
+  }, 1500);
 
-  // Fallback to web
-  setTimeout(() => {
-    window.location.href = webUrl;
+  const clearFallback = () => {
+    window.clearTimeout(fallbackTimer);
+  };
 
-    // Copy message so user can paste
-    navigator.clipboard.writeText(message);
-    alert("Message copied! Paste it in Instagram chat");
-  }, 1200);
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (document.visibilityState !== "visible") {
+        clearFallback();
+      }
+    },
+    { once: true },
+  );
+
+  window.addEventListener("pagehide", clearFallback, { once: true });
+
+  window.location.assign(appUrl);
+}
+
+export function openInstagramProfile() {
+  const appUrl = `instagram://user?username=${INSTAGRAM_HANDLE}`;
+  const webUrl = INSTAGRAM_PROFILE_URL;
+
+  const fallbackTimer = window.setTimeout(() => {
+    if (document.visibilityState === "visible") {
+      window.location.href = webUrl;
+    }
+  }, 1500);
+
+  const clearFallback = () => {
+    window.clearTimeout(fallbackTimer);
+  };
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (document.visibilityState !== "visible") {
+        clearFallback();
+      }
+    },
+    { once: true },
+  );
+
+  window.addEventListener("pagehide", clearFallback, { once: true });
+
+  window.location.assign(appUrl);
 }

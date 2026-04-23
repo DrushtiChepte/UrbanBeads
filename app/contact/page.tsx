@@ -1,3 +1,7 @@
+"use client";
+
+import { INSTAGRAM_PROFILE_URL, openInstagramProfile } from "@/lib/instagram";
+
 export default function ContactPage() {
   return (
     <div className="min-h-screen px-4 py-10 mt-20 flex items-center justify-center fade-up">
@@ -15,9 +19,13 @@ export default function ContactPage() {
         </div>
 
         <a
-          href="https://www.instagram.com/__urbanbeads/"
+          href={INSTAGRAM_PROFILE_URL}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={(e) => {
+            e.preventDefault();
+            openInstagramProfile();
+          }}
           className="flex items-center justify-center gap-3 w-full mb-10 rounded-full bg-[#7A6755] text-white py-3 hover:bg-[#5E4C3A] transition"
         >
           <svg

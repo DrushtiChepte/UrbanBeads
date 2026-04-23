@@ -1,10 +1,7 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import {
-  buildInstagramOrderMessage,
-  INSTAGRAM_PROFILE_URL,
-} from "@/lib/instagram";
+import { buildInstagramOrderMessage, openInstagramDM } from "@/lib/instagram";
 import { Product } from "@/lib/product";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -39,7 +36,7 @@ export default function ProductView({ product }: { product: Product }) {
       return;
     }
 
-    window.open(INSTAGRAM_PROFILE_URL, "_blank", "noopener,noreferrer");
+    openInstagramDM();
   };
 
   const scrollToIndex = (index: number) => {

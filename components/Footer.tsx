@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { footerLinks } from "@/lib/constants";
 import { usePathname } from "next/navigation";
+import { INSTAGRAM_PROFILE_URL, openInstagramProfile } from "@/lib/instagram";
 
 const Footer = () => {
   const pathName = usePathname();
@@ -41,8 +42,12 @@ const Footer = () => {
             <li>
               Instagram:{" "}
               <a
-                href="https://www.instagram.com/__urbanbeads/"
+                href={INSTAGRAM_PROFILE_URL}
                 className="underline hover:text-brown"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openInstagramProfile();
+                }}
                 rel="noopener noreferrer"
               >
                 @__urbanbeads
