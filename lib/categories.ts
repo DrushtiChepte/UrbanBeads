@@ -80,6 +80,7 @@ export const updateCategoryThumbnail = async ({
   slug: string;
   file: File;
 }) => {
+  const bucket = "All-Products";
   const cleanName = file.name
     .toLowerCase()
     .replace(/\s+/g, "-")
@@ -87,8 +88,19 @@ export const updateCategoryThumbnail = async ({
 
   const filePath = `categories/${slug}/${crypto.randomUUID()}-${cleanName}`;
 
+  const { data: currentCategory, error: currentCategoryError } = await supabase
+    .from("categories")
+    .select("thumbnail_image")
+    .eq("id", categoryId)
+    .single();
+
+  if (currentCategoryError) {
+    console.error("Error fetching current category thumbnail:", currentCategoryError);
+    return { success: false };
+  }
+
   const { error: uploadError } = await supabase.storage
-    .from("All-Products")
+    .from(bucket)
     .upload(filePath, file);
 
   if (uploadError) {
@@ -96,7 +108,7 @@ export const updateCategoryThumbnail = async ({
     return { success: false };
   }
 
-  const { data } = supabase.storage.from("All-Products").getPublicUrl(filePath);
+  const { data } = supabase.storage.from(bucket).getPublicUrl(filePath);
 
   const { error: updateError } = await supabase
     .from("categories")
@@ -105,7 +117,40 @@ export const updateCategoryThumbnail = async ({
 
   if (updateError) {
     console.error("Error updating category thumbnail:", updateError);
+    await supabase.storage.from(bucket).remove([filePath]);
     return { success: false };
+  }
+
+  const previousThumbnailImage =
+    typeof currentCategory.thumbnail_image === "string"
+      ? currentCategory.thumbnail_image
+      : "";
+
+  const previousThumbnailPath = (() => {
+    if (!previousThumbnailImage.includes(`/storage/v1/object/public/${bucket}/`)) {
+      return null;
+    }
+
+    const marker = `/storage/v1/object/public/${bucket}/`;
+    const markerIndex = previousThumbnailImage.indexOf(marker);
+
+    if (markerIndex === -1) {
+      return null;
+    }
+
+    return previousThumbnailImage
+      .slice(markerIndex + marker.length)
+      .split("?")[0];
+  })();
+
+  if (previousThumbnailPath && previousThumbnailPath !== filePath) {
+    const { error: removeError } = await supabase.storage
+      .from(bucket)
+      .remove([previousThumbnailPath]);
+
+    if (removeError) {
+      console.error("Error deleting previous category thumbnail:", removeError);
+    }
   }
 
   return { success: true, thumbnailImage: data.publicUrl };

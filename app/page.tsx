@@ -6,6 +6,8 @@ import Shop from "@/components/Shop";
 import { fetchStoreCategories } from "@/lib/categories";
 import { fetchProducts } from "@/lib/product";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const [products, categories] = await Promise.all([
     fetchProducts(),
