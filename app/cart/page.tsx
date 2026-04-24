@@ -5,7 +5,7 @@ import {
   buildInstagramOrderMessage,
   FREE_SHIPPING_THRESHOLD,
   getShippingFee,
-  openInstagramDM,
+  openInstagramProfile,
 } from "@/lib/instagram";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -32,7 +32,7 @@ export default function CartPage() {
       return;
     }
 
-    openInstagramDM();
+    openInstagramProfile();
   };
 
   return (

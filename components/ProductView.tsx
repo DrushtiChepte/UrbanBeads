@@ -1,7 +1,10 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { buildInstagramOrderMessage, openInstagramDM } from "@/lib/instagram";
+import {
+  buildInstagramOrderMessage,
+  openInstagramProfile,
+} from "@/lib/instagram";
 import { Product } from "@/lib/product";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -36,7 +39,7 @@ export default function ProductView({ product }: { product: Product }) {
       return;
     }
 
-    openInstagramDM();
+    openInstagramProfile();
   };
 
   const scrollToIndex = (index: number) => {
